@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<base href="https://3jmdku6at3i2q.ok.kimi.link">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ArqTech Studios - Marcelo Troche</title>
@@ -12,105 +11,135 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #2C3E50;
-            --secondary-color: #34495E;
-            --accent-color: #E67E22;
-            --bg-color: #F8F9FA;
-            --text-color: #2C3E50;
-            --text-secondary: #7F8C8D;
+            --primary: #003049;
+            --secondary: #0f4c75;
+            --accent: #b8954f;
+            --glass: rgba(255, 255, 255, 0.08);
+            --light: #f8f9fa;
+            --dark: #1e293b;
         }
+        html { scroll-behavior: smooth; }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            background: var(--light);
+            color: var(--dark);
+            font-optical-sizing: auto;
             overflow-x: hidden;
         }
-        .font-display { font-family: 'Playfair Display', serif; }
-        .font-tech { font-family: 'Space Grotesk', sans-serif; }
+        section { overflow: hidden; }
+
+        /* Hero cinemático */
+        @keyframes bgPan {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
         .hero-bg {
-            background: linear-gradient(135deg, rgba(44, 62, 80, 0.9), rgba(52, 73, 94, 0.8)), url('hero-architecture.png');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent), var(--primary));
+            background-size: 400% 400%;
+            animation: bgPan 20s ease infinite;
         }
-        .glass-effect {
-            backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        .gradient-text {
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .card-hover { transition: all 0.3s ease; }
-        .card-hover:hover {
-            transform: translateY(-10px) rotateX(5deg);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, var(--accent-color), #D35400);
-            transition: all 0.3s ease;
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(230, 126, 34, 0.3);
-        }
-        .reveal { opacity: 0; transform: translateY(30px); }
-        .reveal.active { opacity: 1; transform: translateY(0); transition: all 0.6s ease; }
-        .service-icon {
-            width: 80px; height: 80px;
-            background: linear-gradient(135deg, var(--accent-color), #D35400);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 1rem; transition: all 0.3s ease;
-        }
-        .service-icon:hover { transform: scale(1.1) rotate(5deg); }
-        .stats-number { font-size: 3rem; font-weight: 900; color: var(--accent-color); }
-        .portfolio-item {
-            position: relative; overflow: hidden;
-            border-radius: 15px; transition: all 0.3s ease;
-        }
-        .portfolio-item:hover { transform: scale(1.05); }
-        .portfolio-overlay {
-            position: absolute; inset: 0;
-            background: linear-gradient(135deg, rgba(44, 62, 80, 0.8), rgba(230, 126, 34, 0.8));
-            opacity: 0; transition: all 0.3s ease;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .portfolio-item:hover .portfolio-overlay { opacity: 1; }
+
+        /* Navbar glass */
         .navbar {
+            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.75);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            transition: transform 0.3s ease;
+        }
+        .navbar.scrolled { background: rgba(255, 255, 255, 0.9); }
+
+        /* Títulos modernos */
+        h1, h2, h3, .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: var(--primary);
+        }
+
+        /* Tarjetas glass + float */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0, 48, 73, 0.15);
+            transition: all 0.4s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgba(0, 48, 73, 0.25);
+        }
+
+        /* Icono float interno */
+        .service-icon {
+            transition: transform 0.4s ease;
+        }
+        .glass-card:hover .service-icon {
+            transform: translateY(-6px) rotate(5deg) scale(1.1);
+        }
+
+        /* Botones glass */
+        .btn-glass {
+            background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.25);
             transition: all 0.3s ease;
         }
-        .navbar.scrolled {
-            background: rgba(255, 255, 255, 0.98);
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        .btn-glass:hover {
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
         }
-       /* ----- COLORES NUEVOS ----- */
-.experiencia-title {
-  color: #16a34a;                 /* verde */
-  animation: fadeSlideIn 1s ease-out forwards;
-  opacity: 0;
-  transform: translateY(-20px);
-}
 
-.experiencia-subtext {
-  color: rgba(0, 0, 0, 0.75);    /* negro semitransparente */
-}
+        /* Footer glass */
+        footer {
+            background: rgba(30, 41, 59, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-@keyframes fadeSlideIn {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-} 
+        /* Logo animado */
+        .logo-animate {
+            display: inline-block;
+            animation: dropIn 1s ease-out forwards, pulse 4s ease-in-out infinite;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .logo-animate:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 8px rgba(184, 149, 79, 0.6));
+        }
+        @keyframes dropIn {
+            0% { opacity: 0; transform: translateY(-40px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        /* Revelado suave */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Párrafos legibles */
+        p {
+            max-width: 65ch;
+            line-height: 1.7;
+        }
     </style>
+<base target="_blank">
 </head>
 <body>
 
@@ -118,7 +147,7 @@
     <nav class="navbar fixed top-0 w-full z-50 py-4">
         <div class="container mx-auto px-6">
             <div class="flex justify-between items-center">
-                <div class="font-display text-2xl font-bold gradient-text">
+                <div class="logo-animate font-display text-2xl font-bold gradient-text">
                     ArqTech Studios
                 </div>
                 <div class="hidden md:flex space-x-8">
@@ -142,10 +171,10 @@
                 Diseñamos espacios para experiencias de vida memorables, garantizando integridad y calidad que perdura.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="https://wa.me/595974168110" target="_blank" class="btn-primary text-white px-8 py-4 rounded-full font-semibold text-lg">
+                <a href="https://wa.me/595974168110" target="_blank" class="btn-glass text-white px-8 py-4 rounded-full font-semibold text-lg">
                     Escríbenos por WhatsApp
                 </a>
-                <a href="#contact" class="glass-effect text-white px-8 py-4 rounded-full font-semibold text-lg border">
+                <a href="#contact" class="btn-glass text-white px-8 py-4 rounded-full font-semibold text-lg border">
                     Ver contacto
                 </a>
             </div>
@@ -162,15 +191,15 @@
                 </p>
             </div>
             
-            <div class="grid md:grid-cols-3 gap-8 mb-16">
-                <div class="text-center reveal">
-  <h2 class="experiencia-title font-display text-5xl font-bold mb-6">Experiencia</h2>
-  <p class="experiencia-subtext text-lg text-gray-700 max-w-4xl mx-auto">
-    ArqTech representa a una nueva generación de proyectistas y constructores comprometidos con la innovación, la eficiencia y el diseño contemporáneo.<br>
-    Con experiencia en diseño arquitectónico, modelado 3D y dirección de obras, impulsamos un nuevo concepto de construcción moderna y accesible en Paraguay.<br>
-    Cada proyecto es una oportunidad para fusionar funcionalidad, estética y sostenibilidad, creando espacios que mejoran la calidad de vida de las personas y reflejan la evolución de la arquitectura moderna.
-  </p>
-</div>
+            <div class="text-center reveal">
+                <h2 class="experiencia-title font-display text-5xl font-bold mb-6">Experiencia</h2>
+                <p class="experiencia-subtext text-lg text-gray-700 max-w-4xl mx-auto">
+                    ArqTech representa a una nueva generación de proyectistas y constructores comprometidos con la innovación, la eficiencia y el diseño contemporáneo.<br>
+                    Con experiencia en diseño arquitectónico, modelado 3D y dirección de obras, impulsamos un nuevo concepto de construcción moderna y accesible en Paraguay.<br>
+                    Cada proyecto es una oportunidad para fusionar funcionalidad, estética y sostenibilidad, creando espacios que mejoran la calidad de vida de las personas y reflejan la evolución de la arquitectura moderna.
+                </p>
+            </div>
+        </div>
     </section>
 
     <!-- Services Section -->
@@ -185,7 +214,7 @@
             </div>
             
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="card-hover bg-white p-8 rounded-2xl shadow-lg reveal">
+                <div class="glass-card card-hover p-8 reveal">
                     <div class="service-icon">
                         <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
@@ -204,7 +233,7 @@
                     </ul>
                 </div>
                 
-                <div class="card-hover bg-white p-8 rounded-2xl shadow-lg reveal">
+                <div class="glass-card card-hover p-8 reveal">
                     <div class="service-icon">
                         <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -224,7 +253,7 @@
                     </ul>
                 </div>
                 
-                <div class="card-hover bg-white p-8 rounded-2xl shadow-lg reveal">
+                <div class="glass-card card-hover p-8 reveal">
                     <div class="service-icon">
                         <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -243,7 +272,7 @@
                     </ul>
                 </div>
                 
-                <div class="card-hover bg-white p-8 rounded-2xl shadow-lg reveal">
+                <div class="glass-card card-hover p-8 reveal">
                     <div class="service-icon">
                         <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
@@ -263,7 +292,7 @@
                     </ul>
                 </div>
                 
-                <div class="card-hover bg-white p-8 rounded-2xl shadow-lg reveal">
+                <div class="glass-card card-hover p-8 reveal">
                     <div class="service-icon">
                         <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
@@ -282,7 +311,7 @@
                     </ul>
                 </div>
                 
-                <div class="card-hover bg-white p-8 rounded-2xl shadow-lg reveal">
+                <div class="glass-card card-hover p-8 reveal">
                     <div class="service-icon">
                         <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
@@ -358,47 +387,25 @@
                 
                 <div class="reveal">
                     <form action="https://formsubmit.co/arquitroche911@gmail.com" method="POST" class="space-y-6">
-    <input type="hidden" name="_captcha" value="false">
-    <input type="hidden" name="_next" value="https://arquitroche.github.io/ArqtechStudios/?enviado=true">
-
-    <div>
-        <label class="block text-sm font-semibold mb-2">Nombre Completo</label>
-        <input type="text" name="nombre" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" placeholder="Tu nombre">
-    </div>
-    <div>
-        <label class="block text-sm font-semibold mb-2">Email</label>
-        <input type="email" name="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" placeholder="tu@email.com">
-    </div>
-    <div>
-        <label class="block text-sm font-semibold mb-2">Teléfono</label>
-        <input type="tel" name="telefono" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" placeholder="Tu número de teléfono">
-    </div>
-    <div>
-        <label class="block text-sm font-semibold mb-2">Mensaje</label>
-        <textarea name="mensaje" rows="4" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" placeholder="Cuéntanos sobre tu proyecto..."></textarea>
-    </div>
-    <button type="submit" class="w-full btn-primary text-white py-4 rounded-lg font-semibold text-lg">
-        Enviar Solicitud
-    </button>
-</form>
-
+                        <input type="hidden" name="_captcha" value="false">
+                        <input type="hidden" name="_next" value="https://arquitroche.github.io/ArqtechStudios/?enviado=true">
                         <div>
                             <label class="block text-sm font-semibold mb-2">Nombre Completo</label>
-                            <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" placeholder="Tu nombre">
+                            <input type="text" name="nombre" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" placeholder="Tu nombre">
                         </div>
                         <div>
                             <label class="block text-sm font-semibold mb-2">Email</label>
-                            <input type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" placeholder="tu@email.com">
+                            <input type="email" name="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" placeholder="tu@email.com">
                         </div>
                         <div>
                             <label class="block text-sm font-semibold mb-2">Teléfono</label>
-                            <input type="tel" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" placeholder="Tu número de teléfono">
+                            <input type="tel" name="telefono" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" placeholder="Tu número de teléfono">
                         </div>
                         <div>
                             <label class="block text-sm font-semibold mb-2">Mensaje</label>
-                            <textarea rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" placeholder="Cuéntanos sobre tu proyecto..."></textarea>
+                            <textarea name="mensaje" rows="4" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" placeholder="Cuéntanos sobre tu proyecto..."></textarea>
                         </div>
-                        <button type="submit" class="w-full btn-primary text-white py-4 rounded-lg font-semibold text-lg">
+                        <button type="submit" class="w-full btn-glass text-white py-4 rounded-lg font-semibold text-lg">
                             Enviar Solicitud
                         </button>
                     </form>
@@ -408,10 +415,10 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
+    <footer class="text-white py-12">
         <div class="container mx-auto px-6">
             <div class="text-center">
-                <div class="font-display text-3xl font-bold gradient-text mb-4">
+                <div class="logo-animate font-display text-3xl font-bold gradient-text mb-4">
                     ArqTech Studios
                 </div>
                 <p class="text-gray-400 mb-6">
