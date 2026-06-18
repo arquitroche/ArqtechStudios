@@ -1,466 +1,1560 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>s
+<html lang="es" class="scroll-smooth">
+<head>
     <meta charset="UTF-8">
-    <met
-    a name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ArqTech Studios - Marcelo Troche</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArqTech Studios | Arquitectura, Diseño & Construcción en Paraguay</title>
+    <meta name="description" content="ArqTech Studios — Estudio de arquitectura contemporánea en Paraguay. Diseño residencial premium, renders fotorrealistas, planos ejecutivos y construcción llave en mano.">
+    <meta name="keywords" content="arquitectura, Paraguay, diseño residencial, renders 3D, construcción, ArqTech Studios">
+    <meta property="og:title" content="ArqTech Studios | Arquitectura & Construcción">
+    <meta property="og:description" content="Diseñamos la casa que siempre soñaste. Modelado 3D, planos ejecutivos y construcción llave en mano en Paraguay.">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/png" href="logo/Logo ArqTech.png">
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Serif:ital,wght@0,400;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'], /* Formal body font */
+                        display: ['"Space Grotesk"', 'sans-serif'], /* Elegant architectural title font, highly readable */
+                        grotesk: ['"Space Grotesk"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            base: '#020712',       /* Dark deep navy background */
+                            card: '#08101e',       /* Deep Navy Card background */
+                            primary: '#d4af37',    /* Bright Gold */
+                            primaryMuted: '#b8954f',/* Muted Gold */
+                            accent: '#10b981',     /* Emerald Green */
+                            textLight: '#f3f4f6',  /* Ivory Text */
+                            textMuted: '#9ca3af',  /* Gray text */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        :root {
-            --primary: #003049;
-            --secondary: #0f4c75;
-            --accent: #b8954f;
-            --light: #f8f9fa;
-            --dark: #1e293b;
-        }
-        html { scroll-behavior: smooth; }
-        body { font-family: 'Inter', sans-serif; background: var(--light); color: var(--dark); overflow-x: hidden; }
-        section { overflow: hidden; }
-
-        /* Hero cinemático */
-        .hero-bg {
-            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent), var(--primary));
-            background-size: 400% 400%;
-            animation: bgPan 20s ease infinite;
-        }
-        @keyframes bgPan {
-            0%   { background-position: 0% 50%; }
-            50%  { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* Estilos CSS personalizados para maximizar la estética premium */
+        body {
+            background-color: #020712;
+            color: #f3f4f6;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        /* Navbar glass */
-        .navbar {
-            backdrop-filter: blur(12px);
-            background: rgba(255, 255, 255, 0.75);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-            transition: transform 0.3s ease;
-        }
-        .navbar.scrolled { background: rgba(255, 255, 255, 0.9); }
-
-        /* Títulos modernos */
-        h1, h2, h3, .section-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            color: var(--primary);
+        /* SVG Noise Overlay (Grano de película cinematográfica) */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            content: "";
+            opacity: 0.035;
+            z-index: 9999;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        /* Tarjetas glass + float */
+        /* Glassmorphism */
+        .glass-nav {
+            backdrop-filter: blur(16px);
+            background: rgba(2, 7, 18, 0.75);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.08);
+        }
+
+        /* Ambient Glow Blobs */
+        .glow-blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.035) 0%, transparent 70%);
+            filter: blur(90px);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .blob-1 {
+            top: 25%;
+            left: -10%;
+            animation: float-blob-1 25s infinite alternate ease-in-out;
+        }
+        .blob-2 {
+            bottom: 25%;
+            right: -10%;
+            animation: float-blob-2 30s infinite alternate ease-in-out;
+        }
+        @keyframes float-blob-1 {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(120px, 90px) scale(1.3); }
+        }
+        @keyframes float-blob-2 {
+            0% { transform: translate(0, 0) scale(1.3); }
+            100% { transform: translate(-90px, -140px) scale(0.95); }
+        }
+
+        /* Scroll Progress Bar */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(to right, #b8954f, #d4af37);
+            z-index: 100;
+            width: 0%;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Tarjeta con Inclinación 3D (Tilt) */
         .glass-card {
-            background: rgba(255, 255, 255, 0.75);
+            background: rgba(8, 16, 30, 0.65);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 24px;
-            box-shadow: 0 8px 32px rgba(0, 48, 73, 0.15);
-            transition: all 0.4s ease;
+            border: 1px solid rgba(212, 175, 55, 0.05);
+            transition: border-color 0.5s, box-shadow 0.5s, transform 0.1s ease-out;
+            transform-style: preserve-3d;
         }
+
         .glass-card:hover {
-            transform: translateY(-12px) scale(1.02);
-            box-shadow: 0 25px 50px -12px rgba(0, 48, 73, 0.25);
+            border-color: rgba(212, 175, 55, 0.25);
+            box-shadow: 0 20px 45px -12px rgba(212, 175, 55, 0.18);
         }
 
-        /* Icono float interno */
-        .service-icon {
-            transition: transform 0.4s ease;
-        }
-        .glass-card:hover .service-icon {
-            transform: translateY(-6px) rotate(5deg) scale(1.1);
+        /* Hero Text Gradient Animation */
+        .gradient-text {
+            background: linear-gradient(135deg, #f3f4f6 20%, #d4af37 60%, #f3f4f6 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 6s linear infinite;
         }
 
-        /* Botón visible y funcional */
-        .btn-glass {
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            padding: 1rem 2rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        @keyframes shine {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        /* Ken Burns Zoom Effect */
+        .kenburns-bg {
+            animation: kenburns 30s ease infinite alternate;
+        }
+
+        @keyframes kenburns {
+            0% {
+                transform: scale(1) translate(0, 0);
+            }
+            100% {
+                transform: scale(1.15) translate(-1%, -1%);
+            }
+        }
+
+        /* Words Pull Up Entrance */
+        .word-span {
             display: inline-block;
+            overflow: hidden;
+            vertical-align: bottom;
         }
-        .btn-glass:hover {
-            background: #d35400;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        /* Logo animado */
-        .logo-animate {
+        .word-inner {
             display: inline-block;
-            animation: dropIn 1s ease-out forwards, pulse 4s ease-in-out infinite;
-            cursor: pointer;
-            transition: transform 0.3s ease;
+            transform: translateY(105%);
+            animation: pullUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
-        .logo-animate:hover {
-            transform: scale(1.05);
-            filter: drop-shadow(0 0 8px rgba(184, 149, 79, 0.6));
-        }
-        @keyframes dropIn {
-            0% { opacity: 0; transform: translateY(-40px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
+        @keyframes pullUp {
+            to { transform: translateY(0); }
         }
 
-        /* Revelado suave */
-        .reveal {
+        /* Layout Grid Pattern Background */
+        .bg-grid-pattern {
+            background-size: 50px 50px;
+            background-image: 
+                linear-gradient(to right, rgba(212, 175, 55, 0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(212, 175, 55, 0.015) 1px, transparent 1px);
+        }
+
+        /* Tab Content Reveal */
+        .tab-content {
             opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease;
+            transform: translateY(10px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
         }
-        .reveal.active {
+        .tab-content.active {
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* Párrafos legibles */
-        p {
-            max-width: 65ch;
-            line-height: 1.7;
+        /* Splash Screen portal styling (Oculta marca de agua haciendo crop leve) */
+        #intro-portal {
+            z-index: 1000;
+            transition: opacity 1.2s cubic-bezier(0.7, 0, 0.3, 1), visibility 1.2s;
+        }
+        
+        /* Oculta la marca de agua del generador IA aplicando zoom */
+        #portal-video {
+            transform: scale(1.18);
+            transform-origin: center;
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            transition: transform 1.2s cubic-bezier(0.7, 0, 0.3, 1), opacity 1.2s ease-out;
+        }
+
+        /* Accordion transition utility */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+            opacity: 0;
+        }
+        .accordion-content.active {
+            max-height: 500px;
+            opacity: 1;
+        }
+
+        /* Scroll reveal custom animations (Efecto premium de entrada) */
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-element.revealed {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
-<body>
+<body class="font-sans antialiased selection:bg-brand-primary selection:text-brand-base bg-grid-pattern overflow-hidden">
 
-    <!-- Navigation -->
-    <nav class="navbar fixed top-0 w-full z-50 py-4">
-        <div class="container mx-auto px-6">
-            <div class="flex justify-between items-center">
-                <div class="logo-animate font-display text-2xl font-bold gradient-text">
-                    ArqTech Studios
-                </div>
-                <div class="hidden md:flex space-x-8">
-                    <a href="#home" class="nav-link text-gray-700 hover:text-orange-500 transition-colors">Inicio</a>
-                    <a href="#services" class="nav-link text-gray-700 hover:text-orange-500 transition-colors">Servicios</a>
-                    <a href="#portfolio" class="nav-link text-gray-700 hover:text-orange-500 transition-colors">Portafolio</a>
-                    <a href="#technology" class="nav-link text-gray-700 hover:text-orange-500 transition-colors">Tecnología</a>
-                    <a href="#contact" class="nav-link text-gray-700 hover:text-orange-500 transition-colors">Contacto</a>
-                </div>
-            </div>
+    <!-- PORTAL DE ENTRADA INMERSIVO (SPLASH SCREEN CON RECORRIDO DE CÁMARA 3D ACELERADO) -->
+    <div id="intro-portal" class="fixed inset-0 w-screen h-screen bg-brand-base flex flex-col items-center justify-center overflow-hidden" style="transition: opacity 1.2s cubic-bezier(0.7, 0, 0.3, 1), visibility 1.2s;">
+        
+        <!-- Video Local de Inicio (Ajustado con escala para recortar la marca de agua del generador) -->
+        <div class="absolute inset-0 z-0 overflow-hidden">
+            <video id="portal-video" class="w-full h-full object-cover opacity-35" playsinline muted style="transform: scale(1.18); transform-origin: center; transition: transform 1.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 1.5s ease-out;">
+                <source src="inicio.mp4" type="video/mp4">
+                Tu navegador no soporta videos.
+            </video>
+            <div class="absolute inset-0 bg-gradient-to-t from-brand-base via-brand-base/40 to-brand-base/20"></div>
         </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="min-h-screen flex items-center justify-center relative text-white text-center px-6"
-        style="background: linear-gradient(rgba(0,48,73,0.7),rgba(15,76,117,0.8)), url('https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=1950&q=80') center/cover no-repeat;">
-        <div class="max-w-4xl mx-auto reveal">
-            <h1 class="font-display text-6xl md:text-8xl font-bold mb-6">
-                <span class="gradient-text">ArqTech Studios</span>
+        <!-- Portal Content (Touchable & Responsive) -->
+        <div id="portal-content" class="relative z-10 text-center px-6 transition-all duration-[800ms] flex flex-col items-center justify-center h-full w-full select-none cursor-pointer" onclick="iniciarRecorrido()">
+            <h1 class="font-display italic text-6xl md:text-8xl font-normal tracking-wide text-white mb-4 leading-none select-none">
+                Comencemos
             </h1>
-            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-                Diseñamos espacios para experiencias de vida memorables, garantizando integridad y calidad que perdura.
+            <p class="text-brand-primary text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.25em] font-semibold font-sans mb-16 max-w-lg mx-auto opacity-80 leading-relaxed select-none">
+                Diseñamos la casa que siempre soñaste
             </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="https://wa.me/595974168110" target="_blank" class="btn-glass text-white px-8 py-4 rounded-full font-semibold text-lg">
-                    Escríbenos por WhatsApp
+            <div class="inline-flex items-center gap-2.5 px-6 py-3 rounded-full border border-brand-primary/20 bg-brand-base/80 text-brand-primary text-[10px] sm:text-xs font-bold uppercase tracking-widest hover:bg-brand-primary hover:text-brand-base transition-all duration-300 shadow-lg shadow-black/50 select-none">
+                <i data-lucide="play" class="w-3.5 h-3.5 text-brand-primary"></i> Comenzar Recorrido
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN PAGE WRAPPER (Invisible until splash finishes) -->
+    <div id="main-content-wrapper" class="opacity-0 transition-opacity duration-1000">
+
+        <!-- Scroll Progress Indicator -->
+        <div id="scroll-progress"></div>
+
+        <!-- Noise Texture Overlay globally -->
+        <div class="noise-overlay"></div>
+
+        <!-- Ambient Glowing lights -->
+        <div class="glow-blob blob-1"></div>
+        <div class="glow-blob blob-2"></div>
+
+        <!-- NAVIGATION BAR -->
+        <nav class="glass-nav fixed top-0 w-full z-50 py-4 transition-all duration-300">
+            <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+                <a href="#inicio" class="flex items-center gap-3 group">
+                    <img src="logo/Logo ArqTech.png" alt="ArqTech Logo" class="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block'">
+                    <span id="logo-fallback" class="hidden text-brand-primary font-display text-2xl font-bold tracking-wider">ARQTECH®</span>
+                    <div class="flex flex-col">
+                        <span class="text-white font-display text-xl font-bold tracking-tight">ArqTech®</span>
+                    </div>
                 </a>
-                <a href="#contact" class="btn-glass text-white px-8 py-4 rounded-full font-semibold text-lg border">
-                    Ver contacto
-                </a>
-            </div>
-        </div>
-    </section>
+                
+                <!-- Desktop Links -->
+                <div class="hidden md:flex items-center space-x-8 font-medium font-sans text-sm">
+                    <a href="#inicio" class="text-brand-textLight hover:text-brand-primary transition-colors duration-200">Inicio</a>
+                    <a href="#nosotros" class="text-brand-textMuted hover:text-brand-primary transition-colors duration-200">Nosotros</a>
+                    <a href="#servicios" class="text-brand-textMuted hover:text-brand-primary transition-colors duration-200">Servicios</a>
+                    <a href="#portafolio" class="text-brand-textMuted hover:text-brand-primary transition-colors duration-200">Portafolio</a>
+                    <a href="#contacto" class="border border-brand-primary/20 bg-brand-primary/10 text-brand-primary hover:bg-brand-primary hover:text-brand-base px-5 py-2 rounded-full transition-all duration-300">Contacto</a>
+                </div>
 
-    <!-- About Section -->
-    <section class="py-20 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16 reveal">
-                <h2 class="font-display text-5xl font-bold mb-6 gradient-text">Innovación Arquitectónica</h2>
-                <p class="text-xl text-gray-600 max-w-4xl mx-auto">
-                    Pioneros en integrar tecnología avanzada con diseño arquitectónico en Paraguay. Cada proyecto representa nuestro compromiso con la excelencia desde el inicio.
-                </p>
+                <!-- Mobile Hamburger Menu Button -->
+                <button id="menu-btn" class="md:hidden text-brand-textLight hover:text-brand-primary focus:outline-none transition-colors duration-200">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
             </div>
-            
-            <div class="text-center reveal">
-                <div class="relative w-full max-w-4xl mx-auto mb-8 rounded-2xl overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=1950&q=80" 
-                         class="w-full h-64 object-cover opacity-30" alt="Edificio moderno">
-                    <div class="absolute inset-0 bg-white/60 backdrop-blur-sm"></div>
-                </div>
-                <h2 class="experiencia-title font-display text-5xl font-bold mb-6">Experiencia</h2>
-                <p class="experiencia-subtext text-lg text-gray-700 max-w-4xl mx-auto">
-                    ArqTech representa a una nueva generación de proyectistas y constructores comprometidos con la innovación, la eficiencia y el diseño contemporáneo.<br>
-                    Con experiencia en diseño arquitectónico, modelado 3D y dirección de obras, impulsamos un nuevo concepto de construcción moderna y accesible en Paraguay.<br>
-                    Cada proyecto es una oportunidad para fusionar funcionalidad, estética y sostenibilidad, creando espacios que mejoran la calidad de vida de las personas y reflejan la evolución de la arquitectura moderna.
-                </p>
-            </div>
-        </div>
-    </section>
 
-    <!-- Services Section -->
-    <section id="services" class="py-20 bg-gray-50">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16 reveal">
-                <h2 class="font-display text-5xl font-bold mb-6 gradient-text">Nuestros Servicios</h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Ofrecemos soluciones integrales en arquitectura, construcción y tecnología 
-                    para transformar tus ideas en realidades extraordinarias.
-                </p>
+            <!-- Mobile Navigation Menu -->
+            <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-brand-base/95 border-b border-brand-primary/10 py-6 px-6 flex flex-col space-y-4 shadow-xl z-50">
+                <a href="#inicio" class="mobile-link text-brand-textLight text-lg hover:text-brand-primary">Inicio</a>
+                <a href="#nosotros" class="mobile-link text-brand-textMuted text-lg hover:text-brand-primary">Nosotros</a>
+                <a href="#servicios" class="mobile-link text-brand-textMuted text-lg hover:text-brand-primary">Servicios</a>
+                <a href="#portafolio" class="mobile-link text-brand-textMuted text-lg hover:text-brand-primary">Portafolio</a>
+                <a href="#contacto" class="mobile-link text-brand-primary text-lg font-semibold py-2">Contacto</a>
             </div>
-            
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Diseño Arquitectónico -->
-                <div class="glass-card card-hover p-8 reveal">
-                    <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=800&q=60" 
-                         class="w-full h-40 object-cover rounded-t-2xl mb-4 -mt-4" alt="Diseño Arquitectónico">
-                    <div class="service-icon">
-                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-semibold mb-4 text-center">Diseño Arquitectónico</h3>
-                    <p class="text-gray-600 text-center mb-6">
-                        Transformamos tus sueños en planos reales con diseños personalizados, 
-                        planos 2D y modelos 3D de alta precisión.
-                    </p>
-                    <ul class="text-sm text-gray-500 space-y-2">
-                        <li>✓ Diseños arquitectónicos personalizados</li>
-                        <li>✓ Planos 2D y modelos 3D</li>
-                        <li>✓ Asesoría en distribución y funcionalidad</li>
-                        <li>✓ Optimización de espacios</li>
-                    </ul>
-                </div>
-                
-                <!-- Visualización 3D -->
-                <div class="glass-card card-hover p-8 reveal">
-                    <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=800&q=60" 
-                         class="w-full h-40 object-cover rounded-t-2xl mb-4 -mt-4" alt="Visualización 3D">
-                    <div class="service-icon">
-                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-semibold mb-4 text-center">Visualización 3D</h3>
-                    <p class="text-gray-600 text-center mb-6">
-                        Ve tu casa antes de construirla con renders fotorrealistas, 
-                        tours virtuales 360° y videos de recorrido arquitectónico.
-                    </p>
-                    <ul class="text-sm text-gray-500 space-y-2">
-                        <li>✓ Renders fotorrealistas exteriores e interiores</li>
-                        <li>✓ Tours virtuales 360°</li>
-                        <li>✓ Videos recorridos arquitectónicos</li>
-                        <li>✓ Animaciones de proyectos</li>
-                    </ul>
-                </div>
-                
-                <!-- Consultoría Constructiva -->
-                <div class="glass-card card-hover p-8 reveal">
-                    <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=60" 
-                         class="w-full h-40 object-cover rounded-t-2xl mb-4 -mt-4" alt="Consultoría Constructiva">
-                    <div class="service-icon">
-                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-semibold mb-4 text-center">Consultoría Constructiva</h3>
-                    <p class="text-gray-600 text-center mb-6">
-                        Construimos tu confianza con asesoría técnica profesional, 
-                        análisis de terrenos y control de calidad en obra.
-                    </p>
-                    <ul class="text-sm text-gray-500 space-y-2">
-                        <li>✓ Asesoría técnica en construcción</li>
-                        <li>✓ Análisis de terrenos y factibilidad</li>
-                        <li>✓ Presupuestos detallados y realistas</li>
-                        <li>✓ Control de calidad en obra</li>
-                    </ul>
-                </div>
-                
-                <!-- Proyecto Llave en Mano -->
-                <div class="glass-card card-hover p-8 reveal">
-                    <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=800&q=60" 
-                         class="w-full h-40 object-cover rounded-t-2xl mb-4 -mt-4" alt="Proyecto Llave en Mano">
-                    <div class="service-icon">
-                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-semibold mb-4 text-center">Remodelación y Ampliaciones</h3>
-                    <p class="text-gray-600 text-center mb-6">
-                        Renovamos tus espacios existentes con ampliaciones residenciales, 
-                        modernización de fachadas y optimización de distribución.
-                    </p>
-                    <ul class="text-sm text-gray-500 space-y-2">
-                        <li>✓ Rediseño de espacios existentes</li>
-                        <li>✓ Ampliaciones residenciales</li>
-                        <li>✓ Modernización de fachadas</li>
-                        <li>✓ Optimización de distribución</li>
-                    </ul>
-                </div>
-                
-                <!-- Tecnología Avanzada -->
-                <div class="glass-card card-hover p-8 reveal">
-                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=60" 
-                         class="w-full h-40 object-cover rounded-t-2xl mb-4 -mt-4" alt="Tecnología Avanzada">
-                    <div class="service-icon">
-                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-semibold mb-4 text-center">Tecnología Avanzada</h3>
-                    <p class="text-gray-600 text-center mb-6">
-                        Potenciamos tu proyecto con herramientas digitales, análisis de eficiencia 
-                        energética y simulaciones de iluminación natural.
-                    </p>
-                    <ul class="text-sm text-gray-500 space-y-2">
-                        <li>✓ Optimización de diseños con herramientas digitales</li>
-                        <li>✓ Análisis de eficiencia energética</li>
-                        <li>✓ Simulaciones de iluminación natural</li>
-                        <li>✓ Generación de ideas con sistemas computarizados</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
+        </nav>
 
-    <!-- Contact Section -->
-    <section id="contact" class="py-20 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16 reveal">
-                <h2 class="font-display text-5xl font-bold mb-6 gradient-text">Comienza Tu Proyecto</h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    ¿Listo para transformar tus ideas en realidad? Contáctanos y comencemos 
-                    a construir el espacio de tus sueños.
-                </p>
+        <!-- HERO SECTION (Con carrusel de imágenes Ken Burns lento) -->
+        <section id="inicio" class="relative min-h-screen flex items-center justify-center pt-24 pb-16 overflow-hidden">
+            <!-- Background Images Container -->
+            <div class="absolute inset-0 z-0 overflow-hidden">
+                <div id="hero-slider-container" class="absolute inset-0 w-full h-full">
+                    <!-- Slides de fondo cargados en JS -->
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-t from-brand-base via-brand-base/90 to-transparent"></div>
             </div>
-            
-            <div class="grid md:grid-cols-2 gap-12">
-                <div class="reveal">
-                    <h3 class="text-2xl font-bold mb-6">Información de Contacto</h3>
-                    <div class="space-y-6">
-                        <div class="flex items-center space-x-4">
-                            <div class="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center">
-                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold">WhatsApp</h4>
-                                <p class="text-gray-600">+595 974 168 110</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center space-x-4">
-                            <div class="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center">
-                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold">Email</h4>
-                                <p class="text-gray-600">arquitroche911@gmail.com</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center space-x-4">
-                            <div class="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center">
-                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold">Ubicación</h4>
-                                <p class="text-gray-600">Paraguay</p>
-                            </div>
-                        </div>
-                    </div>
+
+            <div class="relative z-10 max-w-5xl mx-auto px-6 text-center">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-brand-primary/20 bg-brand-primary/10 text-brand-primary text-xs font-semibold uppercase tracking-widest mb-8">
+                    <i data-lucide="sparkles" class="w-4 h-4"></i> Diseño & Rigor Técnico en Paraguay
                 </div>
                 
-                <div class="reveal">
-                    <form action="https://formsubmit.co/arquitroche911@gmail.com" method="POST" class="space-y-6">
-                        <input type="hidden" name="_captcha" value="false">
-                        <input type="hidden" name="_next" value="#">
-                        <div>
-                            <label class="block text-sm font-semibold mb-2">Nombre Completo</label>
-                            <input type="text" name="nombre" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" placeholder="Tu nombre">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold mb-2">Email</label>
-                            <input type="email" name="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" placeholder="tu@email.com">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold mb-2">Teléfono</label>
-                            <input type="tel" name="telefono" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" placeholder="Tu número de teléfono">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold mb-2">Mensaje</label>
-                            <textarea name="mensaje" rows="4" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500" placeholder="Cuéntanos sobre tu proyecto..."></textarea>
-                        </div>
-                        <button type="submit" class="w-full btn-glass text-white py-4 rounded-lg font-semibold text-lg">
-                            Enviar Solicitud
+                <h1 id="hero-title" class="font-display text-6xl md:text-8xl font-extrabold tracking-tight mb-6">
+                    <!-- Se poblará con animación en JS -->
+                </h1>
+                
+                <p class="text-lg md:text-xl text-brand-textMuted max-w-3xl mx-auto mb-10 leading-relaxed font-light font-sans">
+                    Modelado en tres dimensiones, renders fotorrealistas y planos listos para construir. Tu proyecto garantizado de inicio a fin.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center font-sans">
+                    <a href="#portafolio" class="w-full sm:w-auto bg-brand-primary hover:bg-white text-brand-base font-bold px-8 py-4 rounded-full transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-brand-primary/15 hover:scale-105">
+                        Explorar Catálogo <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </a>
+                    <a href="https://wa.me/595974168110" target="_blank" class="w-full sm:w-auto border border-white/10 hover:border-brand-primary/50 bg-white/5 hover:bg-brand-primary/10 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 flex items-center justify-center gap-2 hover:scale-105">
+                        <i data-lucide="message-circle" class="w-5 h-5 text-brand-accent"></i> WhatsApp Directo
+                    </a>
+                </div>
+            </div>
+
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 opacity-55 animate-bounce">
+                <span class="text-xs tracking-widest text-brand-textMuted uppercase">Deslizar</span>
+                <i data-lucide="chevron-down" class="w-4 h-4 text-brand-primary"></i>
+            </div>
+        </section>
+
+        <!-- SOBRE NOSOTROS SECTION (Texto oficial de Nosotros.txt con navegación de pestañas) -->
+        <section id="nosotros" class="py-28 relative overflow-hidden border-t border-white/5 bg-brand-base z-10">
+            <div class="max-w-4xl mx-auto px-6 reveal-element">
+                <div class="flex items-center gap-3 text-brand-primary text-xs uppercase tracking-widest mb-4 font-bold">
+                    <span class="w-8 h-[1px] bg-brand-primary"></span> Sobre Nosotros
+                </div>
+                
+                <h2 class="font-display text-4xl md:text-6xl font-bold text-white mb-10 leading-tight">
+                    Innovación tecnológica y rigor constructivo
+                </h2>
+
+                <!-- Interactive Tab buttons -->
+                <div class="flex border-b border-white/10 mb-8 overflow-x-auto gap-2 md:gap-4 select-none font-sans">
+                    <button onclick="switchTab('filosofia')" id="tab-btn-filosofia" class="tab-button active px-5 py-3 border-b-2 border-brand-primary text-brand-primary font-bold text-sm transition-all duration-300 whitespace-nowrap focus:outline-none">
+                        Filosofía & Racionalismo
+                    </button>
+                    <button onclick="switchTab('innovacion')" id="tab-btn-innovacion" class="tab-button px-5 py-3 border-b-2 border-transparent text-brand-textMuted hover:text-white font-bold text-sm transition-all duration-300 whitespace-nowrap focus:outline-none">
+                        Innovación & Precisión
+                    </button>
+                    <button onclick="switchTab('vision')" id="tab-btn-vision" class="tab-button px-5 py-3 border-b-2 border-transparent text-brand-textMuted hover:text-white font-bold text-sm transition-all duration-300 whitespace-nowrap focus:outline-none">
+                        Nuestra Visión
+                    </button>
+                </div>
+
+                <!-- Tab Contents -->
+                <div class="relative min-h-[280px]">
+                    
+                    <!-- Tab 1: Filosofia -->
+                    <div id="tab-content-filosofia" class="tab-content active space-y-6 text-brand-textMuted text-base md:text-lg leading-relaxed font-light font-sans">
+                        <p>
+                            En <span class="text-white font-semibold">Arqtech</span>, concebimos la arquitectura como la perfecta convergencia entre la innovación tecnológica y la rigurosidad constructiva. Somos un estudio emergente dedicado al diseño, proyección y desarrollo de obras arquitectónicas contemporáneas, con un fuerte enfoque en el sector residencial premium.
+                        </p>
+                        <p>
+                            Nuestra filosofía se fundamenta en el <span class="text-brand-primary italic font-serif text-lg md:text-xl font-display">racionalismo formal</span>, el minimalismo y la estética de vanguardia. Nos especializamos en materializar espacios caracterizados por la pureza de sus líneas, volumetrías limpias y el uso honesto de materiales de carácter industrial, como el hormigón visto y las texturas crudas, logrando obras de un alto valor estético y funcional.
+                        </p>
+                    </div>
+
+                    <!-- Tab 2: Innovacion -->
+                    <div id="tab-content-innovacion" class="tab-content space-y-6 text-brand-textMuted text-base md:text-lg leading-relaxed font-light font-sans hidden">
+                        <p>
+                            Nos diferencia la integración de herramientas avanzadas de visualización tridimensional y metodologías digitales en nuestro proceso de diseño. Esto nos permite ofrecer a nuestros clientes una <span class="text-white font-semibold">experiencia hiperrealista</span> y una comprensión exacta de cada espacio antes de su ejecución material, optimizando recursos, minimizando imprevistos en obra y garantizando los más altos estándares de calidad técnica.
+                        </p>
+                        <p>
+                            Abordamos cada encargo de manera integral, desde la planificación presupuestaria rigurosa hasta la coordinación en terreno con mano de obra calificada, asegurando que la precisión del plano se traduzca con exactitud en la realidad construida.
+                        </p>
+                    </div>
+
+                    <!-- Tab 3: Vision -->
+                    <div id="tab-content-vision" class="tab-content space-y-6 text-brand-textMuted text-base md:text-lg leading-relaxed font-light hidden">
+                        <p class="text-2xl md:text-4xl text-brand-primary font-light italic font-display leading-relaxed">
+                            "Crear arquitectura de autor que trascienda las tendencias efímeras, ofreciendo soluciones habitacionales eficientes, sólidas y sofisticadas que respondan a las exigencias y al estilo de vida de quienes las habitan."
+                        </p>
+                        <p class="text-xs text-brand-textMuted mt-4 font-sans">
+                            — Marcelo Troche, Fundador de ArqTech Studios
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- NUESTROS SERVICIOS SECTION (Lista interactiva idéntica a la imagen, enfocada en transparencia e inversión) -->
+        <section id="servicios" class="py-24 bg-brand-card/25 border-t border-white/5 relative z-10">
+            <div class="max-w-4xl mx-auto px-6 reveal-element">
+                
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <div class="inline-block text-brand-primary text-xs uppercase tracking-widest mb-4 font-bold font-sans">Servicios Profesionales</div>
+                    <h2 class="font-display text-4xl md:text-6xl font-bold text-white mb-6">Nuestros Servicios</h2>
+                    <p class="text-brand-textMuted text-lg font-light font-sans">Selecciona un servicio para conocer nuestro procedimiento, control de capital y garantías técnicas.</p>
+                </div>
+
+                <!-- Accordion List -->
+                <div class="space-y-4">
+                    
+                    <!-- Servicio 1 -->
+                    <div class="glass-card rounded-2xl border border-white/5 overflow-hidden transition-all duration-300">
+                        <button onclick="toggleAccordion('serv-1')" class="w-full px-6 py-6 md:px-8 flex items-center justify-between text-left focus:outline-none">
+                            <div>
+                                <h3 class="font-display text-xl md:text-2xl font-bold text-white uppercase tracking-wider">Ejecución de Obras y Construcción Residencial</h3>
+                                <p class="text-brand-primary text-xs md:text-sm mt-1 font-light font-sans">Gestión completa de obra nueva, llave en mano y dirección técnica.</p>
+                            </div>
+                            <span id="icon-serv-1" class="text-brand-primary transition-transform duration-300"><i data-lucide="plus" class="w-6 h-6"></i></span>
                         </button>
-                    </form>
+                        
+                        <div id="content-serv-1" class="accordion-content px-6 pb-6 md:px-8 md:pb-8 border-t border-white/5 text-brand-textMuted text-sm md:text-base leading-relaxed font-light pt-6 font-sans">
+                            <h4 class="text-white font-bold text-xs uppercase tracking-wider mb-2">Procedimiento Profesional & Confianza Financiera:</h4>
+                            <p class="mb-4">
+                                Nuestra metodología de edificación residencial se basa en la absoluta transparencia económica y de ejecución. Elaboramos cómputos métricos de máxima precisión y cronogramas de obra rígidos. 
+                            </p>
+                            <p class="mb-4">
+                                **Control del 100% de tu dinero:** El capital nunca se entrega por adelantado de forma global. Las transacciones se realizan mediante desembolsos vinculados estrictamente al avance real de la obra (certificaciones semanales o quincenales), garantizando que pagues exactamente por lo construido en cada etapa.
+                            </p>
+                            <p>
+                                Entregamos informes técnicos certificados firmados por el arquitecto a cargo, junto con un registro audiovisual completo (fotos y videos en HD) en cada hito finalizado.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Servicio 2 -->
+                    <div class="glass-card rounded-2xl border border-white/5 overflow-hidden transition-all duration-300">
+                        <button onclick="toggleAccordion('serv-2')" class="w-full px-6 py-6 md:px-8 flex items-center justify-between text-left focus:outline-none">
+                            <div>
+                                <h3 class="font-display text-xl md:text-2xl font-bold text-white uppercase tracking-wider">Remodelación Integral e Interiorismo</h3>
+                                <p class="text-brand-primary text-xs md:text-sm mt-1 font-light font-sans">Transformación de fachadas, renovación de ambientes y equipamiento.</p>
+                            </div>
+                            <span id="icon-serv-2" class="text-brand-primary transition-transform duration-300"><i data-lucide="plus" class="w-6 h-6"></i></span>
+                        </button>
+                        
+                        <div id="content-serv-2" class="accordion-content px-6 pb-6 md:px-8 md:pb-8 border-t border-white/5 text-brand-textMuted text-sm md:text-base leading-relaxed font-light pt-6 font-sans">
+                            <h4 class="text-white font-bold text-xs uppercase tracking-wider mb-2">Procedimiento Profesional & Confianza Financiera:</h4>
+                            <p class="mb-4">
+                                Revitalizamos estructuras existentes aportando alto valor estético, modernidad y eficiencia espacial. El proceso incluye un relevamiento digital milimétrico del estado actual del inmueble, el modelado en 3D de las propuestas y la planificación de las fases de obra sin sorpresas en el camino.
+                            </p>
+                            <p>
+                                Mantenemos una comunicación e informes financieros diarios respecto a la compra de materiales y avance constructivo. El cliente aprueba cada cotización de equipamiento o terminación antes de su adquisición, asegurando que el presupuesto inicial acordado se respete de principio a fin de la obra.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Servicio 3 -->
+                    <div class="glass-card rounded-2xl border border-white/5 overflow-hidden transition-all duration-300">
+                        <button onclick="toggleAccordion('serv-3')" class="w-full px-6 py-6 md:px-8 flex items-center justify-between text-left focus:outline-none">
+                            <div>
+                                <h3 class="font-display text-xl md:text-2xl font-bold text-white uppercase tracking-wider">Venta de Proyectos Ejecutivos</h3>
+                                <p class="text-brand-primary text-xs md:text-sm mt-1 font-light font-sans">Catálogo de diseños arquitectónicos completos, listos para implementar.</p>
+                            </div>
+                            <span id="icon-serv-3" class="text-brand-primary transition-transform duration-300"><i data-lucide="plus" class="w-6 h-6"></i></span>
+                        </button>
+                        
+                        <div id="content-serv-3" class="accordion-content px-6 pb-6 md:px-8 md:pb-8 border-t border-white/5 text-brand-textMuted text-sm md:text-base leading-relaxed font-light pt-6 font-sans">
+                            <h4 class="text-white font-bold text-xs uppercase tracking-wider mb-2">Procedimiento Profesional & Confianza Financiera:</h4>
+                            <p class="mb-4">
+                                Entregamos carpetas técnicas completas que contienen: planos arquitectónicos al detalle, planos de cortes, fachadas, esquemas de instalaciones sanitarias y eléctricas, especificaciones de acabados y los cómputos métricos definitivos.
+                            </p>
+                            <p>
+                                Esto te otorga un **blindaje financiero total** al momento de contratar un constructor externo: al contar con la carpeta técnica de ArqTech, sabrás exactamente qué materiales comprar y los volúmenes reales, impidiendo sobrecostos imprevistos por improvisaciones o falta de detalle constructivo en el plano.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Servicio 4 -->
+                    <div class="glass-card rounded-2xl border border-white/5 overflow-hidden transition-all duration-300">
+                        <button onclick="toggleAccordion('serv-4')" class="w-full px-6 py-6 md:px-8 flex items-center justify-between text-left focus:outline-none">
+                            <div>
+                                <h3 class="font-display text-xl md:text-2xl font-bold text-white uppercase tracking-wider">Invierte en Paraguay</h3>
+                                <p class="text-brand-primary text-xs md:text-sm mt-1 font-light font-sans">Gestión integral de proyectos desde el exterior. Materializamos su inversión inmobiliaria en suelo paraguayo con supervisión técnica, reportes a distancia y ejecución llave en mano.</p>
+                            </div>
+                            <span id="icon-serv-4" class="text-brand-primary transition-transform duration-300"><i data-lucide="plus" class="w-6 h-6"></i></span>
+                        </button>
+                        
+                        <div id="content-serv-4" class="accordion-content px-6 pb-6 md:px-8 md:pb-8 border-t border-white/5 text-brand-textMuted text-sm md:text-base leading-relaxed font-light pt-6 font-sans">
+                            <h4 class="text-white font-bold text-xs uppercase tracking-wider mb-2">Procedimiento Profesional & Confianza Financiera:</h4>
+                            <p class="mb-4">
+                                Pensado exclusivamente para paraguayos en el extranjero e inversores internacionales. Establecemos un canal de control a distancia donde usted tiene acceso inmediato a:
+                            </p>
+                            <ul class="list-disc pl-5 mb-4 space-y-2 text-sm">
+                                <li>**Conciliación Financiera en Tiempo Real:** El cliente administra y aprueba de forma independiente sus fondos desde su banco, desembolsando a hitos constructivos certificados.</li>
+                                <li>**Informes Técnicos e Inspecciones:** Reciba un reporte técnico de calidad firmado semanalmente detallando las tareas ejecutadas y el rendimiento de los materiales.</li>
+                                <li>**Monitoreo Audiovisual:** Registro de fotos/videos semanales en alta resolución y videollamadas periódicas programadas en vivo directo desde la obra.</li>
+                            </ul>
+                            <p>
+                                Nos encargamos de todos los trámites municipales y notariales locales, para que su capital rinda de forma segura en el país con la tranquilidad de que su dinero y su inversión están 100% resguardados bajo control profesional.
+                            </p>
+                        </div>
+                    </div>
+
                 </div>
+
+            </div>
+        </section>
+
+        <!-- PORTFOLIO SECTION -->
+        <section id="portafolio" class="py-24">
+            <div class="max-w-7xl mx-auto px-6 reveal-element">
+                
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <div class="inline-block text-brand-primary text-xs uppercase tracking-widest mb-4 font-bold font-sans">Proyectos Destacados</div>
+                    <h2 class="font-display text-4xl md:text-6xl font-bold text-white mb-6">Nuestro Catálogo</h2>
+                    <p class="text-brand-textMuted text-lg font-light font-sans">Usa el buscador o los filtros rápidos para explorar las viviendas económicas, condominios para inversores y residencias de lujo.</p>
+                </div>
+
+                <!-- Search and Filter Panel -->
+                <div class="max-w-5xl mx-auto mb-12 flex flex-col lg:flex-row gap-4 items-center justify-between z-10 relative font-sans">
+                    <!-- Search bar -->
+                    <div class="relative w-full lg:w-80">
+                        <input type="text" id="project-search" oninput="handleSearch()" class="w-full bg-brand-card/80 border border-white/10 rounded-full py-3 pl-12 pr-6 text-white focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary text-sm transition-all duration-300" placeholder="Buscar proyecto por nombre o m²...">
+                        <i data-lucide="search" class="absolute left-4 top-3.5 w-4 h-4 text-brand-textMuted"></i>
+                    </div>
+                    
+                    <!-- Filters (5 Pestañas) -->
+                    <div class="flex flex-wrap gap-2 justify-center">
+                        <button onclick="filterProjects('todos')" class="filter-btn active bg-brand-primary text-brand-base px-4 py-2 rounded-full text-xs font-bold transition-all duration-300 border border-transparent">
+                            Todos
+                        </button>
+                        <button onclick="filterProjects('economicos')" class="filter-btn bg-brand-card hover:bg-brand-card/80 text-brand-textLight border border-white/5 px-4 py-2 rounded-full text-xs font-bold transition-all duration-300">
+                            Económicos
+                        </button>
+                        <button onclick="filterProjects('premium')" class="filter-btn bg-brand-card hover:bg-brand-card/80 text-brand-textLight border border-white/5 px-4 py-2 rounded-full text-xs font-bold transition-all duration-300">
+                            Premium
+                        </button>
+                        <button onclick="filterProjects('inversionistas')" class="filter-btn bg-brand-card hover:bg-brand-card/80 text-brand-textLight border border-white/5 px-4 py-2 rounded-full text-xs font-bold transition-all duration-300">
+                            Inversionistas
+                        </button>
+                        <button onclick="filterProjects('grandes')" class="filter-btn bg-brand-card hover:bg-brand-card/80 text-brand-textLight border border-white/5 px-4 py-2 rounded-full text-xs font-bold transition-all duration-300">
+                            Grandes Proyectos
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Grid container -->
+                <div id="projects-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 min-h-[400px] z-10 relative">
+                    <!-- Cargado dinámicamente por JavaScript -->
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CONTACT & SOCIAL SECTION (Sin Formulario, centrado en redes sociales) -->
+        <section id="contacto" class="py-24 border-t border-white/5 relative z-10">
+            <div class="max-w-4xl mx-auto px-6 text-center reveal-element">
+                <div class="inline-block text-brand-primary text-xs uppercase tracking-widest mb-4 font-bold font-sans">Hablemos de tu Proyecto</div>
+                <h2 class="font-display text-5xl md:text-7xl font-bold text-white mb-6">Contacta con Nosotros</h2>
+                <p class="text-brand-textMuted text-lg leading-relaxed mb-12 max-w-2xl mx-auto font-sans font-light">
+                    Sigue nuestro trabajo diario, escríbenos directamente por WhatsApp para coordinar una reunión o envíanos un correo corporativo.
+                </p>
+
+                <!-- Social Media grid (5 columnas responsivas) -->
+                <div class="grid grid-cols-2 lg:grid-cols-5 gap-5 font-sans">
+                    <!-- Instagram -->
+                    <a href="https://www.instagram.com/arqtech._" target="_blank" class="glass-card rounded-3xl p-6 flex flex-col items-center justify-center border border-white/5 hover:border-[#ee2a7b]/40 hover:bg-[#ee2a7b]/5 transition-all duration-300 group">
+                        <div class="w-12 h-12 rounded-2xl bg-[#ee2a7b]/10 border border-[#ee2a7b]/20 flex items-center justify-center text-[#ee2a7b] mb-4 group-hover:scale-110 group-hover:bg-[#ee2a7b] group-hover:text-white transition-all duration-300">
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-base font-bold text-white mb-1">Instagram</h3>
+                        <p class="text-brand-primary text-xs font-semibold">@arqtech._</p>
+                        <p class="text-brand-textMuted text-[10px] mt-2 font-light text-center">Nuestros renders y obras diarias</p>
+                    </a>
+
+                    <!-- Facebook -->
+                    <a href="https://www.facebook.com/ArqTech-Constructora-y-Reformas" target="_blank" class="glass-card rounded-3xl p-6 flex flex-col items-center justify-center border border-white/5 hover:border-[#1877f2]/40 hover:bg-[#1877f2]/5 transition-all duration-300 group">
+                        <div class="w-12 h-12 rounded-2xl bg-[#1877f2]/10 border border-[#1877f2]/20 flex items-center justify-center text-[#1877f2] mb-4 group-hover:scale-110 group-hover:bg-[#1877f2] group-hover:text-white transition-all duration-300">
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-base font-bold text-white mb-1">Facebook</h3>
+                        <p class="text-brand-primary text-xs font-semibold">ArqTech-Constructora y Reformas</p>
+                        <p class="text-brand-textMuted text-[10px] mt-2 font-light text-center">Nuestra fanpage oficial de reformas</p>
+                    </a>
+
+                    <!-- WhatsApp -->
+                    <a href="https://wa.me/595974168110" target="_blank" class="glass-card rounded-3xl p-6 flex flex-col items-center justify-center border border-white/5 hover:border-[#25d366]/40 hover:bg-[#25d366]/5 transition-all duration-300 group">
+                        <div class="w-12 h-12 rounded-2xl bg-[#25d366]/10 border border-[#25d366]/20 flex items-center justify-center text-[#25d366] mb-4 group-hover:scale-110 group-hover:bg-[#25d366] group-hover:text-white transition-all duration-300">
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.458 5.704 1.459h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-base font-bold text-white mb-1">WhatsApp</h3>
+                        <p class="text-brand-accent text-xs font-semibold">+595 974 168 110</p>
+                        <p class="text-brand-textMuted text-[10px] mt-2 font-light text-center">Contacto directo e inmediato</p>
+                    </a>
+
+                    <!-- Teléfono -->
+                    <a href="tel:+595974168110" class="glass-card rounded-3xl p-6 flex flex-col items-center justify-center border border-white/5 hover:border-brand-primary/40 hover:bg-brand-primary/5 transition-all duration-300 group">
+                        <div class="w-12 h-12 rounded-2xl bg-brand-primary/10 border border-brand-primary/20 flex items-center justify-center text-brand-primary mb-4 group-hover:scale-110 group-hover:bg-brand-primary group-hover:text-brand-base transition-all duration-300">
+                            <svg class="w-6 h-6 fill-none stroke-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-base font-bold text-white mb-1">Teléfono</h3>
+                        <p class="text-brand-primary text-xs font-semibold">+595 974 168 110</p>
+                        <p class="text-brand-textMuted text-[10px] mt-2 font-light text-center">Llamada directa al arquitecto</p>
+                    </a>
+
+                    <!-- Email -->
+                    <a href="mailto:arquitroche911@gmail.com" class="glass-card rounded-3xl p-6 flex flex-col items-center justify-center border border-white/5 hover:border-[#ea4335]/40 hover:bg-[#ea4335]/5 transition-all duration-300 group">
+                        <div class="w-12 h-12 rounded-2xl bg-[#ea4335]/10 border border-[#ea4335]/20 flex items-center justify-center text-[#ea4335] mb-4 group-hover:scale-110 group-hover:bg-[#ea4335] group-hover:text-white transition-all duration-300">
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 010 19.366V5.457c0-1.29 1.454-2.032 2.514-1.236L12 10.717l9.486-6.496c1.06-.796 2.514-.054 2.514 1.236z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-base font-bold text-white mb-1">Email</h3>
+                        <p class="text-brand-primary text-xs font-semibold">arquitroche911@gmail.com</p>
+                        <p class="text-brand-textMuted text-[10px] mt-2 font-light text-center">Solicita presupuestos y carpetas</p>
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="py-12 bg-brand-base border-t border-white/5 relative z-10 text-center">
+            <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8 font-sans">
+                
+                <div class="flex items-center gap-3">
+                    <img src="logo/Logo ArqTech.png" alt="ArqTech Logo" class="h-8 w-auto object-contain" onerror="this.style.display='none'">
+                    <div class="text-left">
+                        <span class="text-white font-display text-lg font-bold block">ArqTech®</span>
+                        <span class="text-[9px] text-brand-textMuted uppercase tracking-widest -mt-1 block">Diseño & Ejecución</span>
+                    </div>
+                </div>
+
+                <p class="text-sm text-brand-textMuted font-light">
+                    © 2026 ArqTech Studios. Todos los derechos reservados. Creado en Paraguay.
+                </p>
+
+                <div class="flex gap-3">
+                    <a href="https://www.instagram.com/arqtech._" target="_blank" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-brand-textMuted hover:text-[#ee2a7b] hover:border-[#ee2a7b] transition-all duration-300">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                    </a>
+                    <a href="https://www.facebook.com/ArqTech-Constructora-y-Reformas" target="_blank" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-brand-textMuted hover:text-[#1877f2] hover:border-[#1877f2] transition-all duration-300">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    </a>
+                    <a href="https://wa.me/595974168110" target="_blank" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-brand-textMuted hover:text-[#25d366] hover:border-[#25d366] transition-all duration-300">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.458 5.704 1.459h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                    </a>
+                    <a href="tel:+595974168110" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-brand-textMuted hover:text-brand-primary hover:border-brand-primary transition-all duration-300">
+                        <svg class="w-5 h-5 fill-none stroke-current" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+                    </a>
+                    <a href="mailto:arquitroche911@gmail.com" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-brand-textMuted hover:text-[#ea4335] hover:border-[#ea4335] transition-all duration-300">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 010 19.366V5.457c0-1.29 1.454-2.032 2.514-1.236L12 10.717l9.486-6.496c1.06-.796 2.514-.054 2.514 1.236z"/></svg>
+                    </a>
+                </div>
+
+            </div>
+        </footer>
+
+        <!-- INTERACTIVE DETAIL MODAL WITH IMAGE SLIDESHOW (CARRUSEL) -->
+        <div id="detail-modal" class="fixed inset-0 z-50 flex items-center justify-center p-6 bg-brand-base/90 backdrop-blur-md hidden opacity-0 transition-all duration-300">
+            <div class="bg-brand-card border border-white/10 rounded-3xl w-full max-w-2xl overflow-hidden shadow-2xl relative font-sans">
+                
+                <!-- Slideshow Container -->
+                <div class="relative w-full h-64 md:h-80 border-b border-white/5 bg-black/30">
+                    <img id="modal-img" src="" alt="Detalle Proyecto" class="w-full h-full object-cover transition-opacity duration-300">
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-card to-transparent"></div>
+                    
+                    <!-- Close Button -->
+                    <button onclick="closeModal()" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-brand-base/80 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:text-brand-primary transition-colors z-30">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+
+                    <!-- Navigation Arrows -->
+                    <button id="modal-prev-btn" onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-brand-base/80 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:text-brand-primary transition-colors z-20 hidden">
+                        <i data-lucide="chevron-left" class="w-6 h-6"></i>
+                    </button>
+                    <button id="modal-next-btn" onclick="nextSlide()" class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-brand-base/80 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:text-brand-primary transition-colors z-20 hidden">
+                        <i data-lucide="chevron-right" class="w-6 h-6"></i>
+                    </button>
+
+                    <!-- Image Counter Dot Badge -->
+                    <div id="image-counter" class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-brand-base/85 border border-white/10 text-xs px-3 py-1 rounded-full text-brand-textMuted tracking-wider font-semibold z-20 hidden">
+                        <span id="counter-current">1</span> / <span id="counter-total">1</span>
+                    </div>
+                </div>
+
+                <!-- Modal Info -->
+                <div class="p-6 md:p-8">
+                    <div class="flex items-center justify-between gap-4 mb-3">
+                        <span id="modal-area" class="px-3 py-1 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-brand-primary text-xs font-bold"></span>
+                        <span id="modal-category" class="text-xs text-brand-textMuted uppercase tracking-wider font-semibold"></span>
+                    </div>
+                    
+                    <h3 id="modal-title" class="font-display text-2xl md:text-3xl font-bold text-white mb-3"></h3>
+                    <p id="modal-desc" class="text-brand-textMuted text-sm md:text-base font-light mb-5 leading-relaxed"></p>
+                    
+                    <div class="mb-6">
+                        <h4 class="text-white text-xs font-bold uppercase tracking-wider mb-2">Especificaciones Técnicas:</h4>
+                        <ul id="modal-bullets" class="grid grid-cols-2 gap-2 text-xs md:text-sm text-brand-textMuted">
+                            <!-- Rendered dynamically -->
+                        </ul>
+                    </div>
+
+                    <a id="modal-wa-btn" href="" target="_blank" class="w-full bg-brand-primary hover:bg-white text-brand-base font-bold py-3.5 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 text-sm md:text-base">
+                        <i data-lucide="message-circle" class="w-5 h-5"></i> Consultar presupuesto vía WhatsApp
+                    </a>
+                </div>
+
             </div>
         </div>
-    </section>
 
-    <!-- Footer -->
-    <footer class="text-white py-12">
-        <div class="container mx-auto px-6">
-            <div class="text-center">
-                <div class="logo-animate font-display text-3xl font-bold gradient-text mb-4">
-                    ArqTech Studios
-                </div>
-                <p class="text-gray-400 mb-6">
-                    Diseñamos espacios para experiencias de vida memorables, garantizando integridad y calidad que perdura.
-                </p>
-                <p class="text-gray-500 text-sm">
-                    © 2024 ArqTech Studios. Todos los derechos reservados.
-                </p>
-            </div>
-        </div>
-    </footer>
+    </div>
 
+    <!-- JAVASCRIPT CODE FOR INTERACTIVE PORTFOLIO & ANIMATIONS -->
     <script>
-        // Revelar al hacer scroll
-        function revealOnScroll() {
-            const reveals = document.querySelectorAll('.reveal');
-            reveals.forEach(reveal => {
-                const windowHeight = window.innerHeight;
-                const elementTop = reveal.getBoundingClientRect().top;
-                const elementVisible = 150;
-                if (elementTop < windowHeight - elementVisible) {
-                    reveal.classList.add('active');
+        // 1. DATA MOTOR: Listado completo de proyectos reales de Marcelo Troche
+        const PROYECTOS = [
+            // --- ECONÓMICOS ---
+            {
+                id: "loft-35",
+                titulo: "Loft Mini Casa 35m²",
+                categoria: "economicos",
+                area: "35 m²",
+                descripcion: "Mini casa estilo loft sumamente optimizada. Aprovéchamiento vertical en plano abierto con una cocina-comedor integrada y dormitorio en entrepiso. Rápida ejecución en materiales livianos.",
+                render: "PUBLICIDAD/PUBLICAR/ECONÓMICO/35m2/render.png",
+                plano: "PUBLICIDAD/PUBLICAR/ECONÓMICO/35m2/35m2.png",
+                imagenes: [
+                    "PUBLICIDAD/PUBLICAR/ECONÓMICO/35m2/render.png",
+                    "PUBLICIDAD/PUBLICAR/ECONÓMICO/35m2/nocturo.png",
+                    "PUBLICIDAD/PUBLICAR/ECONÓMICO/35m2/35loft.png",
+                    "PUBLICIDAD/PUBLICAR/ECONÓMICO/35m2/lateral.png",
+                    "PUBLICIDAD/PUBLICAR/ECONÓMICO/35m2/oruga.png"
+                ],
+                caracteristicas: ["Cocina comedor integrada", "1 Baño completo", "Dormitorio en altillo", "Estructura térmica metálica"]
+            },
+            {
+                id: "vivienda-55",
+                titulo: "Vivienda Familiar 55m²",
+                categoria: "economicos",
+                area: "55 m²",
+                descripcion: "Vivienda económica familiar de diseño moderno y distribución simétrica. Optimización de muros para abaratar costos, con cielorraso termoacústico y excelente asoleamiento.",
+                render: "PUBLICIDAD/PUBLICAR/ECONÓMICO/55m2/2Habitación.png", // Render 3D
+                plano: "PUBLICIDAD/PUBLICAR/ECONÓMICO/55m2/55m2.png", // Plano 2D
+                imagenes: [
+                    "PUBLICIDAD/PUBLICAR/ECONÓMICO/55m2/2Habitación.png",
+                    "PUBLICIDAD/PUBLICAR/ECONÓMICO/55m2/55m2.png",
+                    "PUBLICIDAD/PUBLICAR/ECONÓMICO/55m2/nocturna.png",
+                    "PUBLICIDAD/PUBLICAR/ECONÓMICO/55m2/noctorno.png",
+                    "PUBLICIDAD/PUBLICAR/ECONÓMICO/55m2/cielo termoacust.png"
+                ],
+                caracteristicas: ["2 Dormitorios cómodos", "Sala social y cocina unificada", "Aislamiento térmico eficiente", "Fachada minimalista y limpia"]
+            },
+            {
+                id: "vivienda-125",
+                titulo: "Vivienda Familiar 125m²",
+                categoria: "economicos",
+                area: "125 m²",
+                descripcion: "Residencia unifamiliar de tamaño mediano con acabados contemporáneos. Espacios amplios y fluidos con cochera semicubierta e integración directa al patio trasero.",
+                render: "PUBLICIDAD/PUBLICAR/ECONÓMICO/125m2/r1.png",
+                plano: "PUBLICIDAD/PUBLICAR/ECONÓMICO/125m2/plano.png",
+                imagenes: [
+                    "PUBLICIDAD/PUBLICAR/ECONÓMICO/125m2/r1.png",
+                    "PUBLICIDAD/PUBLICAR/ECONÓMICO/125m2/r2.png",
+                    "PUBLICIDAD/PUBLICAR/ECONÓMICO/125m2/r3.png",
+                    "PUBLICIDAD/PUBLICAR/ECONÓMICO/125m2/r4.png"
+                ],
+                caracteristicas: ["3 Dormitorios (1 Master Suite)", "Área de servicio integrada", "Cochera para 2 vehículos", "Amplio quincho con parrilla"]
+            },
+            {
+                id: "vivienda-74",
+                titulo: "Vivienda Económica 74m²",
+                categoria: "economicos",
+                area: "74 m²",
+                descripcion: "Modelo unifamiliar económico construido con bloque estructural y hormigón visto. Plano diseñado para terrenos estándar de 10x20 metros en loteos urbanos.",
+                render: "PUBLICIDAD/PUBLICAR/ECONÓMICO/1.png",
+                plano: "PUBLICIDAD/PUBLICAR/ECONÓMICO/5.png",
+                imagenes: [
+                    "PUBLICIDAD/PUBLICAR/ECONÓMICO/1.png",
+                    "PUBLICIDAD/PUBLICAR/ECONÓMICO/2.png",
+                    "PUBLICIDAD/PUBLICAR/ECONÓMICO/3.png",
+                    "PUBLICIDAD/PUBLICAR/ECONÓMICO/4.png",
+                    "PUBLICIDAD/PUBLICAR/ECONÓMICO/5.png",
+                    "PUBLICIDAD/PUBLICAR/ECONÓMICO/6.png"
+                ],
+                caracteristicas: ["2 Dormitorios idénticos", "Patios internos de luz", "Instalación sanitaria agrupada", "Bajo consumo de materiales"]
+            },
+            {
+                id: "vivienda-house",
+                titulo: "Proyecto House",
+                categoria: "economicos",
+                area: "90 m²",
+                descripcion: "Vivienda moderna unifamiliar de excelente espacialidad. Destaca por su diseño de cubierta a una sola vertiente limpia y ventanales frontales que maximizan la entrada de luz.",
+                render: "PUBLICIDAD/PUBLICAR/HOUSE/reder.png",
+                plano: "PUBLICIDAD/PUBLICAR/HOUSE/2d.png",
+                imagenes: [
+                    "PUBLICIDAD/PUBLICAR/HOUSE/reder.png",
+                    "PUBLICIDAD/PUBLICAR/HOUSE/1.png",
+                    "PUBLICIDAD/PUBLICAR/HOUSE/2.png",
+                    "PUBLICIDAD/PUBLICAR/HOUSE/3.png",
+                    "PUBLICIDAD/PUBLICAR/HOUSE/corte2d.png"
+                ],
+                caracteristicas: ["Diseño de techos inclinados", "2 Dormitorios con placar", "Sala comedor con doble altura", "Fachada de ladrillo y revoque"]
+            },
+
+            // --- PREMIUM ---
+            {
+                id: "proyecto-roma",
+                titulo: "Proyecto Roma",
+                categoria: "premium",
+                area: "10x20 m",
+                descripcion: "Residencia contemporánea premium diseñada para terrenos de 10x20 metros. Destacan sus volumetrías de hormigón y el elegante cerramiento perimetral de seguridad integrado.",
+                render: "ARQTECH 75 PROYECT/01- PROYECTO ROMA  - 10X20/PROJETO ROMA.png",
+                imagenes: ["ARQTECH 75 PROYECT/01- PROYECTO ROMA  - 10X20/PROJETO ROMA.png"],
+                caracteristicas: ["Volúmenes de hormigón visto", "3 Dormitorios con vestidor", "Quincho cerrado con vidrios", "Garaje para dos camionetas"]
+            },
+            {
+                id: "proyecto-madrid",
+                titulo: "Proyecto Madrid",
+                categoria: "premium",
+                area: "13x30 m",
+                descripcion: "Residencia de gran envergadura premium con diseño en dos niveles. Su fachada cuenta con revestimiento de piedra natural e iluminación LED oculta para un aspecto nocturno impactante.",
+                render: "ARQTECH 75 PROYECT/02- PROYETO MADRID - 13X30/CASA MADRID.png",
+                imagenes: ["ARQTECH 75 PROYECT/02- PROYETO MADRID - 13X30/CASA MADRID.png"],
+                caracteristicas: ["Revestimiento de piedra natural", "4 Dormitorios en Suite", "Piscina con borde infinito", "Área de servicio independiente"]
+            },
+            {
+                id: "proyecto-lisboa",
+                titulo: "Proyecto Lisboa",
+                categoria: "premium",
+                area: "13x25 m",
+                descripcion: "Diseño moderno con techos planos e imponentes pérgolas de madera y metal. Gran fluidez de circulación interior con galerías integradas al estar principal.",
+                render: "ARQTECH 75 PROYECT/04 - PROYETO LISBOA - 13X25/PROJETO LISBOA.png",
+                imagenes: ["ARQTECH 75 PROYECT/04 - PROYETO LISBOA - 13X25/PROJETO LISBOA.png"],
+                caracteristicas: ["Pérgolas metálicas de diseño", "Estar social de triple altura", "Cocina integrada con isla", "Baños revestidos en mármol"]
+            },
+            {
+                id: "proyecto-tokio",
+                titulo: "Proyecto Tokio",
+                categoria: "premium",
+                area: "10x25 m",
+                descripcion: "Inspiración oriental minimalista con jardines internos de ventilación y luz. Fachada completamente cerrada para privacidad absoluta, abriéndose al patio trasero.",
+                render: "ARQTECH 75 PROYECT/06- PROYETO TÓQUIO - 10X25/TÓQUIO.png",
+                imagenes: ["ARQTECH 75 PROYECT/06- PROYETO TÓQUIO - 10X25/TÓQUIO.png"],
+                caracteristicas: ["Jardín zen de luz interna", "Minimalismo japonés", "Fachada ciega de seguridad", "Integración madera y acero"]
+            },
+            {
+                id: "proyecto-londres",
+                titulo: "Proyecto Londres",
+                categoria: "premium",
+                area: "12x25 m",
+                descripcion: "Diseño clásico inglés adaptado al clima de Paraguay. Techos inclinados con tejas oscuras y grandes ventanales con molduras y acabados finos.",
+                render: "ARQTECH 75 PROYECT/08 - PROYETO LONDRES - 12X25/casa 8 02.png",
+                imagenes: ["ARQTECH 75 PROYECT/08 - PROYETO LONDRES - 12X25/casa 8 02.png"],
+                caracteristicas: ["Techos inclinados elegantes", "Ventanales amplios con molduras", "Pisos de parquet de madera", "Estudio-biblioteca privado"]
+            },
+            {
+                id: "proyecto-moscu",
+                titulo: "Proyecto Moscú",
+                categoria: "premium",
+                area: "12x25 m",
+                descripcion: "Arquitectura imponente y robusta con detalles de vigas de hierro negro y hormigón texturado. Diseño industrial-premium con acabados sobrios de alta calidad.",
+                render: "ARQTECH 75 PROYECT/09 - PROYETO MOSCOU - 12X25/PROJETO MOSCOU.png",
+                imagenes: ["ARQTECH 75 PROYECT/09 - PROYETO MOSCOU - 12X25/PROJETO MOSCOU.png"],
+                caracteristicas: ["Detalles industriales de hierro", "Estructura de hormigón visto", "Ventilación por domótica", "Cochera techada imponente"]
+            },
+            {
+                id: "proyecto-amsterdam",
+                titulo: "Proyecto Amsterdam",
+                categoria: "premium",
+                area: "15x30 m",
+                descripcion: "Diseño holandés vanguardista con amplias aberturas vidriadas que borran la barrera entre interior y exterior. Ideal para terrenos amplios con vegetación.",
+                render: "ARQTECH 75 PROYECT/14 - PROYETO AMSTERDAM - 15X30/PROJETO AMSTERDÃ.png",
+                imagenes: ["ARQTECH 75 PROYECT/14 - PROYETO AMSTERDAM - 15X30/PROJETO AMSTERDÃ.png"],
+                caracteristicas: ["Grandes aberturas vidriadas", "Revestimiento fenólico en techos", "Quincho social panorámico", "Habitaciones con balcón corrido"]
+            },
+            {
+                id: "proyecto-bruselas",
+                titulo: "Proyecto Bruselas",
+                categoria: "premium",
+                area: "15x30 m",
+                descripcion: "Elegancia europea contemporánea en su máxima expresión. Fachada con voladizos de gran porte de ingeniería estructural avanzada en Revit.",
+                render: "ARQTECH 75 PROYECT/15 - PROYETO BRUXELAS - 15X30/PROJETO BRUXELAS.png",
+                imagenes: ["ARQTECH 75 PROYECT/15 - PROYETO BRUXELAS - 15X30/PROJETO BRUXELAS.png"],
+                caracteristicas: ["Volados de hormigón de 4m", "3 Dormitorios en Suite", "Sala de cine o playroom", "Piscina templada con deck"]
+            },
+            {
+                id: "proyecto-oslo",
+                titulo: "Proyecto Oslo",
+                categoria: "premium",
+                area: "15x30 - 200m²",
+                descripcion: "Estilo escandinavo que combina calidez y funcionalidad. Fachadas en tonos oscuros combinados con maderas de reforestación tratadas y carpintería en aluminio negro.",
+                render: "ARQTECH 75 PROYECT/17 - PROYETO OSLO - 15X30 - 200 M2/PROJETO OSLO.png",
+                imagenes: ["ARQTECH 75 PROYECT/17 - PROYETO OSLO - 15X30 - 200 M2/PROJETO OSLO.png"],
+                caracteristicas: ["Fachada nórdica oscura", "Detalles en madera natural", "Grandes lucernarios de techo", "Excelente eficiencia energética"]
+            },
+            {
+                id: "proyecto-sofia",
+                titulo: "Proyecto Sofía",
+                categoria: "premium",
+                area: "19x30 m",
+                descripcion: "Residencia señorial en esquina de gran envergadura. Diseño clásico contemporáneo con amplios accesos, detalles neoclásicos y jardín perimetral ornamentado.",
+                render: "ARQTECH 75 PROYECT/19 - PROYETO SÓFIA - 19X30/PROJETO SÓFIA.png",
+                imagenes: ["ARQTECH 75 PROYECT/19 - PROYETO SÓFIA - 19X30/PROJETO SÓFIA.png"],
+                caracteristicas: ["Residencia en esquina", "Detalles neoclásicos finos", "Hall de entrada monumental", "Gran jardín perimetral"]
+            },
+            {
+                id: "proyecto-atenas",
+                titulo: "Proyecto Atenas",
+                categoria: "premium",
+                area: "10x21 m",
+                descripcion: "Vivienda moderna unifamiliar de corte mediterráneo, con fachadas blancas puras y amplias terrazas de asoleamiento con pérgolas metálicas.",
+                render: "ARQTECH 75 PROYECT/16 - PROYETO ATENAS - 10X21/PROJETO ATENAS.jpg",
+                imagenes: ["ARQTECH 75 PROYECT/16 - PROYETO ATENAS - 10X21/PROJETO ATENAS.jpg"],
+                caracteristicas: ["Estilo moderno mediterráneo", "Terrazas amplias de sol", "Fachadas blancas puras", "Distribución de aire óptima"]
+            },
+
+            // --- INVERSIONISTAS (RESIDENCIALES) ---
+            {
+                id: "condominio-nexus",
+                titulo: "Condominio Nexus",
+                categoria: "inversionistas",
+                area: "140 m² c/u",
+                descripcion: "Proyecto residencial cerrado multifamiliar tipo dúplex de diseño moderno y alta densidad. Diseñado específicamente para optimizar costos de cimentación y muros linderos comunes.",
+                render: "PUBLICIDAD/PUBLICAR/INVERSIÓN/iversion 2/CONDOMINIO NEXUS.png",
+                plano: "PUBLICIDAD/PUBLICAR/INVERSIÓN/iversion 2/Distribuciones.png",
+                imagenes: [
+                    "PUBLICIDAD/PUBLICAR/INVERSIÓN/iversion 2/CONDOMINIO NEXUS.png",
+                    "PUBLICIDAD/PUBLICAR/INVERSIÓN/iversion 2/frontal.png",
+                    "PUBLICIDAD/PUBLICAR/INVERSIÓN/iversion 2/lateral.png",
+                    "PUBLICIDAD/PUBLICAR/INVERSIÓN/iversion 2/dentro.png",
+                    "PUBLICIDAD/PUBLICAR/INVERSIÓN/iversion 2/zoom.png"
+                ],
+                caracteristicas: ["Unidades Dúplex simétricas", "Cimentación unificada económica", "Instalaciones sanitarias en serie", "Alta rentabilidad en alquiler"]
+            },
+            {
+                id: "condominio-eco",
+                titulo: "Condominio Eco-Villas",
+                categoria: "inversionistas",
+                area: "210 m² tot.",
+                descripcion: "Condominio de viviendas pequeñas optimizadas con áreas verdes comunes. Pensado para un público que busca seguridad en áreas metropolitanas de alta plusvalía.",
+                render: "PUBLICIDAD/PUBLICAR/INVERSIÓN/Inversión 3/r1.png",
+                plano: "PUBLICIDAD/PUBLICAR/INVERSIÓN/Inversión 3/r2.png",
+                imagenes: [
+                    "PUBLICIDAD/PUBLICAR/INVERSIÓN/Inversión 3/r1.png",
+                    "PUBLICIDAD/PUBLICAR/INVERSIÓN/Inversión 3/CONDOMINIO ECO.jpg",
+                    "PUBLICIDAD/PUBLICAR/INVERSIÓN/Inversión 3/r2.png",
+                    "PUBLICIDAD/PUBLICAR/INVERSIÓN/Inversión 3/r3.png"
+                ],
+                caracteristicas: ["Casas independientes compactas", "Área común con quincho y deck", "Bajo costo de mantenimiento", "Diseño sostenible con áreas verdes"]
+            },
+            {
+                id: "condominio-duplex",
+                titulo: "Condominio Dúplex 4x12",
+                categoria: "inversionistas",
+                area: "70 m² c/u",
+                descripcion: "Condominio cerrado compuesto de unidades dúplex estrechas de 4x12 metros. Optimización máxima de terrenos angostos y alargados comunes en centros urbanos paraguayos.",
+                render: "ARQTECH 75 PROYECT/69 - CONDOMINIO CON CASA DUPLEX - 4X12 - 70 M2/039 - CONDOMINIO COM CASA DUPLEX - 4X12 - 70 M2.jpg",
+                plano: "ARQTECH 75 PROYECT/69 - CONDOMINIO CON CASA DUPLEX - 4X12 - 70 M2/039 - CONDOMINIO COM CASA DUPLEX - 4X12 - 70 M2-1.jpg",
+                imagenes: [
+                    "ARQTECH 75 PROYECT/69 - CONDOMINIO CON CASA DUPLEX - 4X12 - 70 M2/039 - CONDOMINIO COM CASA DUPLEX - 4X12 - 70 M2.jpg",
+                    "ARQTECH 75 PROYECT/69 - CONDOMINIO CON CASA DUPLEX - 4X12 - 70 M2/039 - CONDOMINIO COM CASA DUPLEX - 4X12 - 70 M2-1.jpg",
+                    "ARQTECH 75 PROYECT/69 - CONDOMINIO CON CASA DUPLEX - 4X12 - 70 M2/039 - CONDOMINIO COM CASA DUPLEX - 4X12 - 70 M2-2.jpg",
+                    "ARQTECH 75 PROYECT/69 - CONDOMINIO CON CASA DUPLEX - 4X12 - 70 M2/039 - CONDOMINIO COM CASA DUPLEX - 4X12 - 70 M2-3.jpg",
+                    "ARQTECH 75 PROYECT/69 - CONDOMINIO CON CASA DUPLEX - 4X12 - 70 M2/039 - CONDOMINIO COM CASA DUPLEX - 4X12 - 70 M2-4.jpg"
+                ],
+                caracteristicas: ["Unidades ultracompactas de 4m", "Dormitorios en segundo nivel", "Fachada integrada unificada", "Muy alta rentabilidad anual"]
+            },
+            {
+                id: "condominio-terreo",
+                titulo: "Condominio Térreo 8x15",
+                categoria: "inversionistas",
+                area: "80 m² c/u",
+                descripcion: "Condominio privado de viviendas familiares de una planta de 80 m² construidos sobre terrenos unificados de 8x15 metros por unidad. Equilibrio perfecto entre costo y áreas libres.",
+                render: "ARQTECH 75 PROYECT/68 - CONDOMINIO  CON CASA DE UNA PLANTA - 8X15 - 80 M2/038 - CONDOMINIO COM CASAS TÉRREAS - 8X15 - 80 M2.jpg",
+                plano: "ARQTECH 75 PROYECT/68 - CONDOMINIO  CON CASA DE UNA PLANTA - 8X15 - 80 M2/039 - CONDOMINIO COM CASAS TÉRREAS - 8X15 - 80 M2-02-02.jpg",
+                imagenes: [
+                    "ARQTECH 75 PROYECT/68 - CONDOMINIO  CON CASA DE UNA PLANTA - 8X15 - 80 M2/038 - CONDOMINIO COM CASAS TÉRREAS - 8X15 - 80 M2.jpg",
+                    "ARQTECH 75 PROYECT/68 - CONDOMINIO  CON CASA DE UNA PLANTA - 8X15 - 80 M2/039 - CONDOMINIO COM CASAS TÉRREAS - 8X15 - 80 M2-02-02.jpg"
+                ],
+                caracteristicas: ["Casas térreas sin escaleras", "2 Dormitorios amplios", "Jardín privado e ingresos comunes", "Ideal para urbanizaciones suburbanas"]
+            },
+
+            // --- GRANDES PROYECTOS ---
+            {
+                id: "triplex-300",
+                titulo: "Casa Triplex 300 m²",
+                categoria: "grandes",
+                area: "300 m²",
+                descripcion: "Residencia vertical premium de tres niveles con gran envergadura. Diseñada íntegramente en Revit, optimiza lotes urbanos estrechos manteniendo el máximo lujo y espacios abiertos en la terraza superior.",
+                render: "PROYECTOS_REDES_SOCIALES/01_TRIPLEX_300M2_IMPERIAL/001.jpg",
+                imagenes: [
+                    "PROYECTOS_REDES_SOCIALES/01_TRIPLEX_300M2_IMPERIAL/001.jpg",
+                    "PROYECTOS_REDES_SOCIALES/01_TRIPLEX_300M2_IMPERIAL/002.jpg",
+                    "PROYECTOS_REDES_SOCIALES/01_TRIPLEX_300M2_IMPERIAL/003.jpg",
+                    "PROYECTOS_REDES_SOCIALES/01_TRIPLEX_300M2_IMPERIAL/004.jpg"
+                ],
+                caracteristicas: ["3 Niveles con ascensor", "Quincho panorámico social", "4 Suites premium", "Estacionamiento triple cubierto"]
+            },
+            {
+                id: "comercial-12x25",
+                titulo: "Proyecto Comercial 12x25",
+                categoria: "grandes",
+                area: "430 m²",
+                descripcion: "Edificio comercial e institucional en dos niveles. Estructura modular de planta libre que facilita subdivisiones de locales comerciales o corporativos de gran afluencia.",
+                render: "ARQTECH 75 PROYECT/27 - COMERCIAL - 12X25 - 430 M2/100_Photo - 4.jpg",
+                imagenes: [
+                    "ARQTECH 75 PROYECT/27 - COMERCIAL - 12X25 - 430 M2/100_Photo - 4.jpg",
+                    "ARQTECH 75 PROYECT/27 - COMERCIAL - 12X25 - 430 M2/100_Photo - 5.jpg",
+                    "ARQTECH 75 PROYECT/27 - COMERCIAL - 12X25 - 430 M2/100_Photo - 6.jpg"
+                ],
+                caracteristicas: ["Fachada vidriada estructural", "Planta libre corporativa", "Acesibilidad universal aprobada", "Estacionamiento frontal clientes"]
+            },
+            {
+                id: "proyecto-terra",
+                titulo: "Proyecto Terra Triplex",
+                categoria: "grandes",
+                area: "12x25 m",
+                descripcion: "Residencia vertical premium y de oficinas de tres plantas. Es el perfecto equilibrio para inversores y profesionales que buscan combinar un corporativo moderno con vivienda de alta gama.",
+                render: "ARQTECH 75 PROYECT/11 - PROJETO TEERA -  TRIPLEX - 12X25/PROJETO TEERÃ.png",
+                imagenes: ["ARQTECH 75 PROYECT/11 - PROJETO TEERA -  TRIPLEX - 12X25/PROJETO TEERÃ.png"],
+                caracteristicas: ["Estructura Triplex ejecutiva", "Oficina en primer nivel", "Estética industrial minimalista", "Vistas panorámicas 360°"]
+            },
+            {
+                id: "proyecto-novadelhi",
+                titulo: "Proyecto Nova Delhi",
+                categoria: "grandes",
+                area: "15x30 m",
+                descripcion: "Magnífica residencia de gran envergadura. Diseño de volumetrías limpias con amplios espacios sociales e integraciones vidriadas al área de piscina de gran porte.",
+                render: "ARQTECH 75 PROYECT/07 - PROYETO NOVA DELI - 15X30/NOVA DELI.png",
+                imagenes: ["ARQTECH 75 PROYECT/07 - PROYETO NOVA DELI - 15X30/NOVA DELI.png"],
+                caracteristicas: ["Estructura imponente en dos niveles", "Gran área social con piscina", "Revestimientos cerámicos premium", "Cocina industrial equipada"]
+            },
+            {
+                id: "proyecto-belgrado",
+                titulo: "Proyecto Belgrado (Agencia)",
+                categoria: "grandes",
+                area: "27x30 m",
+                descripcion: "Edificio corporativo destinado a agencias de marketing o estudios creativos. Destacan las volumetrías de hormigón en voladizo e integraciones de luz natural cenital en toda la planta.",
+                render: "ARQTECH 75 PROYECT/20 - PROYETO BELGRADO -  AGENCIA - 27X30/PROJETO BELGRADO.png",
+                imagenes: ["ARQTECH 75 PROYECT/20 - PROYETO BELGRADO -  AGENCIA - 27X30/PROJETO BELGRADO.png"],
+                caracteristicas: ["Planta abierta de coworking", "Salas de reuniones modulares", "Fachadas térmicas de vanguardia", "Zona de terraza corporativa"]
+            }
+        ];
+
+        // VISTAS ACTIVAS (Guarda si cada tarjeta está en Render '3d' o Plano '2d')
+        let vistasActivas = {};
+        let proyectosFiltrados = [...PROYECTOS];
+        let categoriaActiva = "todos";
+        let textoBusqueda = "";
+
+        // VARIABLES DE ESTADO DEL CARRUSEL EN EL MODAL
+        let carruselImagenes = [];
+        let carruselIndice = 0;
+
+        // IMÁGENES PARA EL CARRUSEL DEL HERO SECTION (MOVIMIENTO LENTO KEN BURNS)
+        const HERO_IMAGES = [
+            "Portada/CASA MADRID.png",
+            "ARQTECH 75 PROYECT/01- PROYECTO ROMA  - 10X20/PROJETO ROMA.png",
+            "ARQTECH 75 PROYECT/04 - PROYETO LISBOA - 13X25/PROJETO LISBOA.png",
+            "ARQTECH 75 PROYECT/06- PROYETO TÓQUIO - 10X25/TÓQUIO.png"
+        ];
+        let heroIndice = 0;
+
+        let recorridoIniciado = false;
+        let transicionEjecutada = false;
+
+        function iniciarRecorrido() {
+            if (recorridoIniciado) return;
+            recorridoIniciado = true;
+
+            // Desvanecer el texto y botón del portal inmediatamente
+            const content = document.getElementById("portal-content");
+            if (content) {
+                content.style.opacity = "0";
+                content.style.pointerEvents = "none";
+            }
+
+            const video = document.getElementById("portal-video");
+            if (video) {
+                // Silenciado estricto para profesionalismo
+                video.muted = true;
+                // Velocidad acelerada (1.6x) para un recorrido dinámico y ultra-rápido
+                video.playbackRate = 1.6;
+                
+                // Hacer el video más visible al reproducir
+                video.classList.remove("opacity-35");
+                video.classList.add("opacity-80");
+
+                video.play().catch(e => {
+                    console.log("Error al iniciar reproducción:", e);
+                    // Si el navegador bloquea la reproducción por políticas, forzar la transición inmediata
+                    transicionarSitio();
+                });
+
+                // Escuchar el avance del video para hacer la transición cuando la cámara se acerque a la puerta (segundo 2.8)
+                video.addEventListener('timeupdate', () => {
+                    if (!transicionEjecutada && video.currentTime >= 2.8) {
+                        transicionEjecutada = true;
+                        transicionarSitio();
+                    }
+                });
+
+                // Fallback si el video termina antes
+                video.onended = function() {
+                    if (!transicionEjecutada) {
+                        transicionEjecutada = true;
+                        transicionarSitio();
+                    }
+                };
+            } else {
+                transicionarSitio();
+            }
+
+            // Fallback de seguridad por tiempo (2.5 segundos reales de espera máxima)
+            setTimeout(() => {
+                if (!transicionEjecutada) {
+                    transicionEjecutada = true;
+                    transicionarSitio();
                 }
+            }, 4500);
+        }
+
+        function transicionarSitio() {
+            const portal = document.getElementById("intro-portal");
+            if (!portal) return;
+
+            const video = document.getElementById("portal-video");
+            if (video) {
+                // Efecto de avance inmersivo final y desvanecimiento
+                video.style.transform = "scale(1.35)";
+                video.style.opacity = "0";
+            }
+
+            portal.style.opacity = "0";
+            portal.style.visibility = "hidden";
+
+            // Revelar el sitio principal
+            const mainContent = document.getElementById("main-content-wrapper");
+            if (mainContent) {
+                mainContent.classList.remove("opacity-0");
+            }
+            document.body.classList.remove("overflow-hidden"); // Habilitar scroll de página
+
+            // Inicializar sliders e ilustraciones de la web tras el fundido
+            setTimeout(() => {
+                animarTituloHero();
+                initHeroSlider();
+                initScrollAnimations(); // Inicializar animaciones de scroll cuando el contenido ya es visible
+                window.dispatchEvent(new Event('scroll')); // Despertar IntersectionObserver para elementos visibles
+                portal.remove(); // Eliminar portal del DOM
+            }, 600);
+        }
+
+        // 3. RENDERIZADO DE LAS TARJETAS DE PORTAFOLIO
+        function renderProjects() {
+            const grid = document.getElementById("projects-grid");
+            grid.innerHTML = "";
+
+            if (proyectosFiltrados.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center text-brand-textMuted py-16">
+                        <i data-lucide="info" class="w-8 h-8 text-brand-primary mx-auto mb-4 opacity-50"></i>
+                        No se encontraron proyectos con esos criterios de búsqueda.
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            proyectosFiltrados.forEach(p => {
+                if (!vistasActivas[p.id]) {
+                    vistasActivas[p.id] = '3d';
+                }
+
+                const vistaActual = vistasActivas[p.id];
+                const imagenAMostrar = vistaActual === '3d' ? p.render : (p.plano ? p.plano : p.render);
+                const tienePlano = !!p.plano;
+
+                const cardHtml = `
+                    <div class="glass-card rounded-3xl overflow-hidden flex flex-col h-full relative" data-project-id="${p.id}">
+                        <!-- Media Container -->
+                        <div class="relative w-full aspect-[4/3] border-b border-white/5 overflow-hidden group">
+                            <!-- Image -->
+                            <img id="img-${p.id}" src="${imagenAMostrar}" alt="${p.titulo}" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 pointer-events-none" onerror="this.src='https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80'">
+                            
+                            <!-- Area/Dimension Badge -->
+                            <span class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full bg-brand-base/85 backdrop-blur-md border border-white/10 text-brand-primary text-xs font-bold tracking-wider select-none font-sans">
+                                ${p.area}
+                            </span>
+
+                            <!-- Switch Button (Condicionado a que exista plano 2D) -->
+                            ${tienePlano ? `
+                            <div class="absolute bottom-4 right-4 z-20 flex bg-brand-base/90 border border-white/10 rounded-full p-1 shadow-lg select-none font-sans">
+                                <button onclick="switchView('${p.id}', '3d')" id="btn-3d-${p.id}" class="px-3 py-1 rounded-full text-[10px] font-extrabold tracking-wider transition-all duration-200 ${vistaActual === '3d' ? 'bg-brand-primary text-brand-base' : 'text-brand-textMuted hover:text-white'}">
+                                    Render 3D
+                                </button>
+                                <button onclick="switchView('${p.id}', '2d')" id="btn-2d-${p.id}" class="px-3 py-1 rounded-full text-[10px] font-extrabold tracking-wider transition-all duration-200 ${vistaActual === '2d' ? 'bg-brand-primary text-brand-base' : 'text-brand-textMuted hover:text-white'}">
+                                    Plano 2D
+                                </button>
+                            </div>
+                            ` : ''}
+                        </div>
+
+                        <!-- Card Body -->
+                        <div class="p-6 flex flex-col flex-grow font-sans">
+                            <span class="text-brand-primary text-xs font-bold uppercase tracking-widest">
+                                ${p.categoria === 'economicos' ? 'Vivienda Económica' : p.categoria === 'premium' ? 'Premium Dúplex' : p.categoria === 'grandes' ? 'Grande Escala / Comercial' : 'Inversionistas'}
+                            </span>
+                            <h3 class="font-display text-xl font-bold text-white mt-1 mb-3">${p.titulo}</h3>
+                            <p class="text-brand-textMuted text-sm leading-relaxed mb-6 font-light line-clamp-3">
+                                ${p.descripcion}
+                            </p>
+                            
+                            <!-- Action Button -->
+                            <button onclick="openModal('${p.id}')" class="w-full mt-auto border border-white/10 hover:border-brand-primary/40 bg-white/5 hover:bg-brand-primary/10 text-white hover:text-brand-primary font-semibold py-3 rounded-xl transition-all duration-300 flex items-center justify-center gap-2">
+                                Ficha Técnica & Renders <i data-lucide="info" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += cardHtml;
+            });
+
+            lucide.createIcons();
+            initTiltEffect(); // Inicializar el efecto de inclinación 3D en las tarjetas
+        }
+
+        // 4. ALTERNADOR RENDER 3D ⇄ PLANO 2D EN LA TARJETA
+        function switchView(projectId, viewType) {
+            vistasActivas[projectId] = viewType;
+            const p = PROYECTOS.find(item => item.id === projectId);
+            if (!p) return;
+
+            const imgElement = document.getElementById(`img-${projectId}`);
+            if (imgElement) {
+                imgElement.src = viewType === '3d' ? p.render : (p.plano ? p.plano : p.render);
+            }
+
+            const btn3d = document.getElementById(`btn-3d-${projectId}`);
+            const btn2d = document.getElementById(`btn-2d-${projectId}`);
+
+            if (btn3d && btn2d) {
+                if (viewType === '3d') {
+                    btn3d.className = "px-3 py-1 rounded-full text-[10px] font-extrabold tracking-wider transition-all duration-200 bg-brand-primary text-brand-base";
+                    btn2d.className = "px-3 py-1 rounded-full text-[10px] font-extrabold tracking-wider transition-all duration-200 text-brand-textMuted hover:text-white";
+                } else {
+                    btn2d.className = "px-3 py-1 rounded-full text-[10px] font-extrabold tracking-wider transition-all duration-200 bg-brand-primary text-brand-base";
+                    btn3d.className = "px-3 py-1 rounded-full text-[10px] font-extrabold tracking-wider transition-all duration-200 text-brand-textMuted hover:text-white";
+                }
+            }
+        }
+
+        // 5. FILTRADO Y BÚSQUEDA SIMULTÁNEA
+        function filterProjects(category) {
+            categoriaActiva = category;
+
+            const buttons = document.querySelectorAll(".filter-btn");
+            buttons.forEach(btn => {
+                btn.classList.remove("active", "bg-brand-primary", "text-brand-base");
+                btn.classList.add("bg-brand-card", "text-brand-textLight");
+            });
+
+            const activeBtn = event.currentTarget;
+            activeBtn.classList.add("active", "bg-brand-primary", "text-brand-base");
+            activeBtn.classList.remove("bg-brand-card", "text-brand-textLight");
+
+            applyFilterAndSearch();
+        }
+
+        function handleSearch() {
+            textoBusqueda = document.getElementById("project-search").value.toLowerCase();
+            applyFilterAndSearch();
+        }
+
+        function applyFilterAndSearch() {
+            proyectosFiltrados = PROYECTOS.filter(p => {
+                const coincideCategoria = (categoriaActiva === "todos" || p.categoria === categoriaActiva);
+                const coincideTexto = (
+                    p.titulo.toLowerCase().includes(textoBusqueda) || 
+                    p.descripcion.toLowerCase().includes(textoBusqueda) || 
+                    p.area.toLowerCase().includes(textoBusqueda)
+                );
+                return coincideCategoria && coincideTexto;
+            });
+            renderProjects();
+        }
+
+        // 6. INTERACTIVIDAD DE ACORDEÓN DE SERVICIOS
+        function toggleAccordion(accordionId) {
+            const content = document.getElementById(`content-${accordionId}`);
+            const icon = document.getElementById(`icon-${accordionId}`);
+            const card = content.parentElement;
+
+            const isActive = content.classList.contains("active");
+
+            document.querySelectorAll(".accordion-content").forEach(cont => {
+                cont.classList.remove("active");
+                cont.parentElement.classList.remove("border-brand-primary/20", "bg-brand-card");
+            });
+            document.querySelectorAll("[id^='icon-serv-']").forEach(ic => {
+                ic.style.transform = "rotate(0deg)";
+                ic.innerHTML = `<i data-lucide="plus" class="w-6 h-6"></i>`;
+            });
+
+            if (!isActive) {
+                content.classList.add("active");
+                icon.style.transform = "rotate(45deg)";
+                icon.innerHTML = `<i data-lucide="plus" class="w-6 h-6 text-brand-primary"></i>`;
+                card.classList.add("border-brand-primary/20", "bg-brand-card");
+            }
+
+            lucide.createIcons();
+        }
+
+        // 7. INTERACTIVIDAD DEL MODAL (Con Carrusel)
+        function openModal(projectId) {
+            const p = PROYECTOS.find(item => item.id === projectId);
+            if (!p) return;
+
+            document.getElementById("modal-title").innerText = p.titulo;
+            document.getElementById("modal-desc").innerText = p.descripcion;
+            document.getElementById("modal-area").innerText = `Área: ${p.area}`;
+            document.getElementById("modal-category").innerText = p.categoria === 'economicos' ? 'Vivienda Económica' : p.categoria === 'premium' ? 'Premium Dúplex' : p.categoria === 'grandes' ? 'Grande Escala / Comercial' : 'Condominio Inversores';
+
+            carruselImagenes = p.imagenes && p.imagenes.length > 0 ? p.imagenes : [p.render];
+            carruselIndice = 0;
+            updateModalImage();
+
+            const prevBtn = document.getElementById("modal-prev-btn");
+            const nextBtn = document.getElementById("modal-next-btn");
+            const counter = document.getElementById("image-counter");
+
+            if (carruselImagenes.length > 1) {
+                prevBtn.classList.remove("hidden");
+                nextBtn.classList.remove("hidden");
+                counter.classList.remove("hidden");
+                document.getElementById("counter-total").innerText = carruselImagenes.length;
+            } else {
+                prevBtn.classList.add("hidden");
+                nextBtn.classList.add("hidden");
+                counter.classList.add("hidden");
+            }
+
+            const bulletContainer = document.getElementById("modal-bullets");
+            bulletContainer.innerHTML = "";
+            p.caracteristicas.forEach(char => {
+                bulletContainer.innerHTML += `<li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-primary"></i> ${char}</li>`;
+            });
+
+            const msg = encodeURIComponent(`Hola Marcelo! Quisiera cotizar y recibir más información del proyecto: ${p.titulo} (${p.area}).`);
+            document.getElementById("modal-wa-btn").href = `https://wa.me/595974168110?text=${msg}`;
+
+            const modal = document.getElementById("detail-modal");
+            modal.classList.remove("hidden");
+            setTimeout(() => {
+                modal.classList.remove("opacity-0");
+            }, 10);
+
+            lucide.createIcons();
+        }
+
+        function updateModalImage() {
+            const img = document.getElementById("modal-img");
+            img.style.opacity = "0.2";
+            setTimeout(() => {
+                img.src = carruselImagenes[carruselIndice];
+                img.style.opacity = "1";
+                document.getElementById("counter-current").innerText = carruselIndice + 1;
+            }, 150);
+        }
+
+        function prevSlide() {
+            carruselIndice = (carruselIndice - 1 + carruselImagenes.length) % carruselImagenes.length;
+            updateModalImage();
+        }
+
+        function nextSlide() {
+            carruselIndice = (carruselIndice + 1) % carruselImagenes.length;
+            updateModalImage();
+        }
+
+        function closeModal() {
+            const modal = document.getElementById("detail-modal");
+            modal.classList.add("opacity-0");
+            setTimeout(() => {
+                modal.classList.add("hidden");
+            }, 300);
+        }
+
+        // 8. HÉROE BACKGROUND SLIDER (Ken Burns Fundido Cruzado)
+        function initHeroSlider() {
+            const container = document.getElementById("hero-slider-container");
+            container.innerHTML = "";
+
+            HERO_IMAGES.forEach((imgSrc, index) => {
+                const imgElement = document.createElement("img");
+                imgElement.src = imgSrc;
+                imgElement.alt = `ArqTech Render ${index + 1}`;
+                imgElement.className = `absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-[2000ms] ease-in-out z-0`;
+                container.appendChild(imgElement);
+            });
+
+            const slides = container.querySelectorAll("img");
+            if (slides.length > 0) {
+                slides[0].classList.remove("opacity-0");
+                slides[0].classList.add("opacity-25", "kenburns-bg");
+            }
+
+            setInterval(() => {
+                const nextIndice = (heroIndice + 1) % slides.length;
+                slides[heroIndice].classList.add("opacity-0");
+                slides[heroIndice].classList.remove("opacity-25", "kenburns-bg");
+                slides[nextIndice].classList.remove("opacity-0");
+                slides[nextIndice].classList.add("opacity-25", "kenburns-bg");
+                heroIndice = nextIndice;
+            }, 7500);
+        }
+
+        // 9. ANIMACIÓN DE TÍTULO EN HERO
+        function animarTituloHero() {
+            const container = document.getElementById("hero-title");
+            const textoOriginal = "ArqTech Studios";
+            const palabras = textoOriginal.split(" ");
+            container.innerHTML = "";
+
+            palabras.forEach((w, index) => {
+                const wordHtml = `<span class="word-span"><span class="word-inner text-white" style="animation-delay: ${index * 0.15}s">${w}</span></span>`;
+                container.innerHTML += wordHtml + " ";
             });
         }
-        window.addEventListener('scroll', revealOnScroll);
-        
-        // Navbar effect
-        window.addEventListener('scroll', function() {
-            const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
+
+        // 10. PESTAÑAS INTERACTIVAS (ABOUT SECTION)
+        function switchTab(tabId) {
+            const buttons = document.querySelectorAll(".tab-button");
+            buttons.forEach(btn => {
+                btn.classList.remove("active", "border-brand-primary", "text-brand-primary");
+                btn.classList.add("border-transparent", "text-brand-textMuted", "hover:text-white");
+            });
+
+            const activeBtn = document.getElementById(`tab-btn-${tabId}`);
+            activeBtn.classList.add("active", "border-brand-primary", "text-brand-primary");
+            activeBtn.classList.remove("border-transparent", "text-brand-textMuted", "hover:text-white");
+
+            const contents = document.querySelectorAll(".tab-content");
+            contents.forEach(cont => {
+                cont.classList.remove("active");
+                cont.classList.add("hidden");
+            });
+
+            const activeCont = document.getElementById(`tab-content-${tabId}`);
+            activeCont.classList.remove("hidden");
+            setTimeout(() => {
+                activeCont.classList.add("active");
+            }, 10);
+        }
+
+        // 11. EFECTO DE INCLINACIÓN 3D (TILT) EN LAS TARJETAS (Hecho a mano en JS)
+        function initTiltEffect() {
+            const cards = document.querySelectorAll('.glass-card');
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = ((centerY - y) / centerY) * 8;
+                    const rotateY = ((x - centerX) / centerX) * 8;
+                    
+                    card.style.transform = `perspective(1000px) translateY(-5px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                    card.style.transition = 'none';
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(1000px) translateY(0) rotateX(0deg) rotateY(0deg)';
+                    card.style.transition = 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s, box-shadow 0.5s';
+                });
+            });
+        }
+
+        // 12. MENÚ DE NAVEGACIÓN MÓVIL
+        const menuBtn = document.getElementById("menu-btn");
+        const mobileMenu = document.getElementById("mobile-menu");
+        const mobileLinks = document.querySelectorAll(".mobile-link");
+
+        menuBtn.addEventListener("click", () => {
+            mobileMenu.classList.toggle("hidden");
         });
-        
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
+
+        mobileLinks.forEach(link => {
+            link.addEventListener("click", () => {
+                mobileMenu.classList.add("hidden");
             });
         });
-        
-        // Inicializar animaciones
-        revealOnScroll();
+
+        // 13. EVENTOS DE SCROLL GENERAL (Nav Fija & Barra de Progreso)
+        window.addEventListener("scroll", () => {
+            const nav = document.querySelector("nav");
+            if (window.scrollY > 50) {
+                nav.classList.add("py-2", "shadow-xl");
+                nav.classList.remove("py-4");
+            } else {
+                nav.classList.add("py-4");
+                nav.classList.remove("py-2", "shadow-xl");
+            }
+
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            const progress = document.getElementById("scroll-progress");
+            if (progress) progress.style.width = scrolled + "%";
+        });
+
+        // 13.5 ANIMACIÓN DE REVELADO AL HACER SCROLL (Scroll Reveal Observer)
+        function initScrollAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("revealed");
+                    }
+                });
+            }, {
+                threshold: 0.01,
+                rootMargin: "0px 0px -20px 0px"
+            });
+
+            document.querySelectorAll(".reveal-element").forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // 14. INICIALIZACIÓN
+        document.addEventListener("DOMContentLoaded", () => {
+            lucide.createIcons();
+            renderProjects();
+        });
     </script>
 </body>
 </html>
-
-
